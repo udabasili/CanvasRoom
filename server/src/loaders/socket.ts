@@ -15,7 +15,7 @@ let io: IOServer;
 export function initializeIO(server: HttpServer): IOServer {
     io = new SocketIOServer(server, {
         cors: {
-            origin: '*', // Adjust this for production, replace '*' with allowed origins
+            origin  : '*', // Adjust this for production, replace '*' with allowed origins
             methods: ['GET', 'POST'],
         },
     });
