@@ -2,6 +2,9 @@ import express, {Application, NextFunction} from 'express';
 import cors from 'cors';
 import routes from '@/api';
 import config from "@/config";
+import {isCelebrateError} from "celebrate";
+import cookieParser from 'cookie-parser';
+import {ErrorHandler, ErrorHandlerProps} from "@/api/middlewares/errorHandler";
 
 export default ({ app }: { app: Application }) => {
 	/**
@@ -20,6 +23,9 @@ export default ({ app }: { app: Application }) => {
 
 	app.use(express.json());
 
+	app.use(cookieParser())
+
+
 	app.use(express.urlencoded({ extended: true }));
 
 	app.use(cors());
@@ -29,15 +35,19 @@ export default ({ app }: { app: Application }) => {
 	/// error handlers
 
 
-	app.use((err: { status: any; message: any; }, req: any, res: {
-		status: (arg0: any) => void;
-		json: (arg0: { errors: { message: any; }; }) => void;
-	}, next: any) => {
+	app.use((req, res, next) => {
+		const error = new ErrorHandler('Not Found', 404);
+		return next(error);
+	});
+
+	app.use((err: ErrorHandlerProps, req: any, res: any, next: any) => {
+		if (isCelebrateError(err)) {
+			const errorBody = err.details.get('body')?.message; // 'details' is a Map()
+			err.message = errorBody || '';
+		}
 		res.status(err.status || 500);
-		res.json({
-			errors: {
-				message: err.message,
-			},
+		return res.json({
+			message: err.message,
 		});
 	});
 
