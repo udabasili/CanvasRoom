@@ -4,12 +4,13 @@ import config from "@/config";
 import {IError} from "@/interface/IError";
 import {Token} from "@/model/token";
 import Logger from "@/loaders/logger";
+
 /** Generate access token and refresh token */
 
 
 export class TokenService {
     /**
-     * @param user
+     * @param userId
      * @returns string
      */
       public static generateAccessToken = (userId: string) => {
@@ -43,10 +44,6 @@ export class TokenService {
 
         try {
             const payload: JwtPayload = jwt.verify(refreshToken, config.refreshTokenSecret as string) as JwtPayload
-            const u = {
-                userId: payload.userId,
-            }
-
             const refreshTokenFound =  await Token.find({
                 where: {
                     refreshToken
@@ -59,7 +56,6 @@ export class TokenService {
             })
             const newestRefreshToken = refreshTokenFound[0]?.toJSON().refreshToken
             const userId = refreshTokenFound[0]?.toJSON().userId
-            console.log(userId)
             if (!newestRefreshToken) {
                 customError.message = 'Unauthorized'
                 customError.status = 401
@@ -71,8 +67,7 @@ export class TokenService {
                 customError.status = 401
                 Logger.debug('Old token.Not valid anymore.')
             }
-            const accessToken = this.generateAccessToken(userId)
-            return accessToken
+            return this.generateAccessToken(userId)
 
         } catch (error) {
             throw customError

@@ -10,7 +10,6 @@ const tokenSchema = new Schema ({
         type: String,
         required: true
     }
-
 })
 
 export const Token = model('Token',tokenSchema)

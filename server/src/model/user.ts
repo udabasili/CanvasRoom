@@ -67,6 +67,11 @@ userSchema.pre('save', async function save(next) {
     }
 });
 
+// delete user tokens before deleting user
+userSchema.post('deleteOne', async function(doc) {
+    await new this.model('Token').deleteMany({ userId: doc._id });
+});
+
 const User = model<IUser, UserModel>('User', userSchema);
 
 export default User;
