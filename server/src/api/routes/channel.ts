@@ -6,10 +6,12 @@ export default (app: Router) =>{
     app.use('/channel', route);
 
     /**
-     * Types of channels:
-     * Text channel
-     * Voice channel
-     * Drawing channel
-     * Code channel
+     * - Ask questions
+     * - Share resources
+     * - Project ideas
+     * - Start coding project and allow others to code
+     * - Design a project
+     * - Frequently asked questions
+     * - External resources (links)
      */
 }

@@ -15,12 +15,6 @@ export default (app: Router) =>{
      * Design group
      *
      * Under each group we have channels
-     * - Ask questions
-     * - Share resources
-     * - Project ideas
-     * - Start coding project and allow others to code
-     * - Design a project
-     * - Frequently asked questions
-     * - External resources (links)
+
      */
 }
