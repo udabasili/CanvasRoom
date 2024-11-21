@@ -1,18 +1,19 @@
+import mongoose, {Document} from "mongoose";
+
 export enum Role {
     USER = 'user',
     ADMIN = 'admin'
 }
 
-export interface IUser {
-    id: number;
+export interface IUser extends Document{
     username: string;
     firstName: string;
     lastName: string;
     email: string;
     password: string;
     role: Role;
-    created_at: Date;
-    updated_at: Date;
+    createdAt: Date;
+    updatedAt: Date;
 
 }
 
