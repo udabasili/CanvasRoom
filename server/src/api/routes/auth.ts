@@ -35,7 +35,7 @@ export default (app: Router) =>{
 
         } catch (e) {
             const error = e as Error
-            Logger.error('🔥 error: %o',  error.message );
+            Logger.error('🔥 error: %o',  error );
             return next(error);
         }
     });
@@ -51,12 +51,11 @@ export default (app: Router) =>{
             Logger.debug('Calling Login endpoint with body: %o', req.body)
             const { user, token } = await authServiceInstance.login(req.body)
             res.cookie('x-token-refresh', token.refreshToken, { httpOnly: true, secure: true });
-            res.json({ user, accessToken: token.accessToken });
+            res.status(200).json({ user, accessToken: token.accessToken });
         } catch (e) {
             const error = e as Error
-            Logger.error('🔥 error: %o',  error.message );
+            Logger.error('🔥 error: %o',  error );
             return next(error);
         }
     });
-    app.use(errors());
 }

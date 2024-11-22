@@ -14,7 +14,15 @@ const groupSchema = new Schema<IGroup, GroupModel, {}>({
     language: {
         type: String,
         required: true
-    }
+    },
+    members: [{
+        type: Schema.Types.ObjectId,
+        ref: 'User',
+    }],
+    channels: [{
+        type: Schema.Types.ObjectId,
+        ref: 'Channel'
+    }],
 },
 {
     timestamps: true

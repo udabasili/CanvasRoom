@@ -4,6 +4,7 @@ import group from './routes/group';
 import channel from './routes/channel';
 import {Router} from "express";
 import user from "@/api/routes/user";
+import {errors} from "celebrate";
 
 export default () => {
     const app = Router();
@@ -12,5 +13,6 @@ export default () => {
     group(app);
     channel(app);
     user(app);
+    app.use(errors());
     return app;
 }

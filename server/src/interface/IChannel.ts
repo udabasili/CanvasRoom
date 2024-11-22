@@ -10,6 +10,16 @@ export const  channelTypes =
     'external_resources'
 ] as const
 
+export const channelLabel = {
+    ask_questions: 'Ask Questions',
+    share_resources: 'Share Resources',
+    project_ideas: 'Project Ideas',
+    coding_project: 'Coding Project',
+    design_project: 'Design Project',
+    faq: 'FAQ',
+    external_resources: 'External Resources'
+}
+
 export interface IChannel extends Document {
     group: mongoose.Types.ObjectId
     name: string
