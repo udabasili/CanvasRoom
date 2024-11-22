@@ -20,6 +20,10 @@ const userSchema = new Schema<IUser, UserModel, IUserMethods>({
         type: String,
         required: true
     },
+    avatarUrl:{
+        type: String,
+    },
+    groups: [{ type: Schema.Types.ObjectId, ref: 'Group' }], // Many-to-many relationship
     email: {
         type: String,
         required: true,

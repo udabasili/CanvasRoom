@@ -1,9 +1,11 @@
 
 import { Server as HttpServer } from 'http';
 import { Server as SocketIOServer, Socket } from 'socket.io';
+import {generalChatListener} from "@/socket/chat";
+import groupListener from "@/socket/group"
 
 // Define a type for the socket instance to use elsewhere
-type IOServer = SocketIOServer;
+export type IOServer = SocketIOServer;
 
 // Socket.IO instance
 let io: IOServer;
@@ -23,8 +25,24 @@ export function initializeIO(server: HttpServer): IOServer {
     console.log('Socket.IO initialized');
 
     // Socket connection event
-    io.on('connection', (socket: Socket) => {
+    io.on('connection', async (socket: Socket) => {
         console.log(`Socket connected: ${socket.id}`);
+        await groupListener({socket})
+
+        // Event: User joins a group (room)
+        socket.on('joinGroup', ({ userId, groupId }: { userId: string; groupId: string }) => {
+            console.log(`User ${userId} joined group ${groupId}`);
+
+
+            // Join the Socket.IO room based on the groupId
+            socket.join(groupId);
+
+            // Emit to others in the group that a user joined
+            socket.to(groupId).emit('userJoined', { userId });
+
+            // Optionally, notify the user that they have successfully joined the group
+            socket.emit('joinedGroup', { groupId });
+        });
 
         // Example event handling
         socket.on('message', (data) => {
