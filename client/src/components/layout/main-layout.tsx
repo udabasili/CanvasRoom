@@ -1,8 +1,7 @@
 import React from 'react';
 import {MainHead} from '../head';
 import {Main, MainLayoutContainer} from './index.styled';
-import {Footer} from "@/components/footer";
-import {Navigation} from "@/components/navigation";
+
 
 type MainLayout = {
     children: React.ReactNode;
@@ -15,11 +14,9 @@ export const MainLayout = (props: MainLayout) => {
     return (
         <MainLayoutContainer>
             <MainHead title={title} description={description}/>
-            <Navigation/>
             <Main>
                 {children}
             </Main>
-            <Footer/>
         </MainLayoutContainer>
     );
 };
