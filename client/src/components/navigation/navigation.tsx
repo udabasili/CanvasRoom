@@ -6,12 +6,11 @@ import {
     NavbarContainer,
     NavLinks
 } from "@/components/navigation/navigation.styled.tsx";
-import React from "react";
+import {useDisclosure} from "@/lib/use-disclosure.ts";
 
 export const Navigation = () => {
-    const [menuOpen, setMenuOpen] = React.useState(false);
 
-    const toggleMenu = () => setMenuOpen(!menuOpen);
+    const {toggle, isOpen, close} = useDisclosure()
 
     return (
         <NavbarContainer>
@@ -24,7 +23,7 @@ export const Navigation = () => {
                 <Link to="#about">About</Link>
             </NavLinks>
 
-            <HamburgerMenu onClick={toggleMenu}>
+            <HamburgerMenu onClick={toggle}>
                 <svg
                     xmlns="http://www.w3.org/2000/svg"
                     viewBox="0 0 24 24"
@@ -36,11 +35,11 @@ export const Navigation = () => {
                 </svg>
             </HamburgerMenu>
 
-            <MobileMenu isOpen={menuOpen}>
-                <Link to="#home" onClick={() => setMenuOpen(false)}>Home</Link>
-                <Link to="#features" onClick={() => setMenuOpen(false)}>Features</Link>
-                <Link to="#pricing" onClick={() => setMenuOpen(false)}>Pricing</Link>
-                <Link to="#about" onClick={() => setMenuOpen(false)}>About</Link>
+            <MobileMenu isOpen={isOpen}>
+                <Link to="#home" onClick={() => close()}>Home</Link>
+                <Link to="#features" onClick={() => close()}>Features</Link>
+                <Link to="#pricing" onClick={() => close()}>Pricing</Link>
+                <Link to="#about" onClick={() => close()}>About</Link>
             </MobileMenu>
         </NavbarContainer>
     );

@@ -1,7 +1,7 @@
 import {useCallback, useState} from "react";
 
 export const useDisclosure = () => {
-    const [isOpen, setIsOpen] = useState<boolean>()
+    const [isOpen, setIsOpen] = useState<boolean>(false)
 
     const open = useCallback(() => {
         setIsOpen(true)
@@ -12,7 +12,7 @@ export const useDisclosure = () => {
     }, [])
 
     const toggle = useCallback(() => {
-        setIsOpen(!isOpen)
+        setIsOpen(isOpen => !isOpen)
     }, [])
 
     return {
