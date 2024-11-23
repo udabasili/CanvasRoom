@@ -1,8 +1,34 @@
+import {useEffect, useState} from "react";
+
 export default function Root() {
+    const [serversStatus, setServersStatus] = useState('unknown');
+
+    useEffect(() => {
+        const checkServer = async () => {
+            try {
+                const response = await fetch('/api/status');
+                if (response.ok) {
+                    setServersStatus('ok');
+                }
+            } catch (error) {
+                console.error(error);
+                setServersStatus('error');
+            }
+        }
+        checkServer();
+    }, []);
+
     return (
         <>
             <div id="sidebar">
                 <h1>React Router Contacts</h1>
+                <div id="status">
+                    <span>Server Response: </span>
+                    <span>{serversStatus === 'unknown' ?
+                        'Checking...' : serversStatus}
+                    </span>
+                </div>
+                <div id="spinner" aria-hidden hidden={true}/>
                 <div>
                     <form id="search-form" role="search">
                         <input
