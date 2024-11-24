@@ -6,7 +6,22 @@ module.exports = {
     "./node_modules/flowbite/**/*.js",
   ],
   theme: {
-    extend: {},
+    extend: {
+      colors: {
+        primaryColor: "#4EAC6D",
+        secondaryColor: "#2B2D31",
+        backgroundColor: "#F2F2F2",
+      },
+      animation: {
+        "fade-in": "fadeIn 2s ease-in-out",
+      },
+      keyframes: {
+        fadeIn: {
+          "0%": { opacity: 0 },
+          "100%": { opacity: 1 },
+        },
+      },
+    },
   },
   plugins: [require("daisyui"), require("flowbite/plugin")],
 };
