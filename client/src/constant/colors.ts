@@ -1,7 +1,5 @@
 export default {
-	primaryColor: '#E8943E',
-	primaryColorLight: '#E8CEB3',
-	primaryColorDark: '#9F5810',
-	secondaryColor: '#4C74E5',
-	backgroundColor: '#F3F0E8',
+	primaryColor: '#4EAC6D',
+	secondaryColor: '#2B2D31',
+	backgroundColor: '#F2F2F2',
 } as const;
