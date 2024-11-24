@@ -1,15 +1,15 @@
-import mongoose, {Document} from "mongoose";
+import mongoose, { Document } from "mongoose";
 
 export interface ICodeFile extends Document {
-    channel: mongoose.Types.ObjectId;
-    fileUrl: string;
-    description?: string;
-    createdAt: Date;
-    updatedAt: Date;
+  channel: mongoose.Types.ObjectId;
+  fileUrl: string;
+  description?: string;
+  createdAt: Date;
+  updatedAt: Date;
 }
 
-export interface ICodeFileDto {
-    channel: mongoose.Types.ObjectId;
-    fileUrl: string;
-    description?: string;
+export interface ICodeFileDTO {
+  channel: mongoose.Types.ObjectId;
+  fileUrl: string;
+  description?: string;
 }
