@@ -44,6 +44,8 @@ const confirmAuthentication = async (
       throw new Error("Unauthorized ");
     }
 
+    Logger.debug("Access Token Found");
+    Logger.debug("Verifying Refresh Token");
     // Attempt refresh token validation
     const refreshToken = getRefreshTokenFromCookie(req);
     if (!refreshToken) {
@@ -56,6 +58,10 @@ const confirmAuthentication = async (
       accessToken,
       config.accessTokenSecret as string,
     ) as JwtPayload;
+    Logger.debug("Access Token Verified");
+    // Attach the user id to the request object
+    console.log(decoded);
+    req.userId = decoded.id;
 
     return next();
   } catch (error) {

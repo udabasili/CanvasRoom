@@ -1,3 +1,3 @@
 export default {
-	apiUrl: import.meta.env.VITE_SERVER_API_URL,
+  apiUrl: import.meta.env.VITE_SERVER_API_URL,
 };
