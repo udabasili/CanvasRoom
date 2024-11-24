@@ -1,118 +1,209 @@
-import js from '@eslint/js'
-import globals from 'globals'
-import reactHooks from 'eslint-plugin-react-hooks'
-import reactRefresh from 'eslint-plugin-react-refresh'
-import tseslint from 'typescript-eslint'
-import importPlugin from "eslint-plugin-import";
-import {resolve} from "eslint-import-resolver-typescript";
+import checkFile from "eslint-plugin-check-file";
+import globals from "globals";
+import {fixupConfigRules} from "@eslint/compat";
+import tsParser from "@typescript-eslint/parser";
+import path from "node:path";
+import {fileURLToPath} from "node:url";
+import js from "@eslint/js";
+import {FlatCompat} from "@eslint/eslintrc";
 
-export default tseslint.config(
-    {ignores: ['dist']},
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+const compat = new FlatCompat({
+    baseDirectory: __dirname,
+    recommendedConfig: js.configs.recommended,
+    allConfig: js.configs.all,
+});
+
+export default [
     {
-        extends: [
-            importPlugin.flatConfigs.recommended,
-            importPlugin.configs.typescript,
-            js.configs.recommended,
-            ...tseslint.configs.recommended],
-        files: ['**/*.{ts,tsx}'],
-        languageOptions: {
-            ecmaVersion: 2020,
-            globals: globals.browser,
-        },
+        ignores: ["node_modules/*", "public/mockServiceWorker.js", "generators/*"],
+    },
+    ...compat.extends("eslint:recommended"),
+    {
         plugins: {
-            'react-hooks': reactHooks,
-            'react-refresh': reactRefresh,
-            'import/no-unresolved': 'error', // Enable unresolved imports check
-
+            "check-file": checkFile,
         },
-        rules: {
-            ...reactHooks.configs.recommended.rules,
-            'no-unused-vars': 'off',
-            'import/no-dynamic-require': 'warn',
-            'import/no-nodejs-modules': 'warn',
-            'import/no-restricted-paths': [
-                'error',
-                {
-                    zones: [
-                        // disables cross-feature imports:
-                        // eg. src/features/discussions should not import from src/features/comments, etc.
-                        {
-                            target: './src/features/auth',
-                            from: './src/features',
-                            except: ['./auth'],
-                        },
-                        {
-                            target: './src/features/comments',
-                            from: './src/features',
-                            except: ['./comments'],
-                        },
-                        {
-                            target: './src/features/discussions',
-                            from: './src/features',
-                            except: ['./discussions'],
-                        },
-                        {
-                            target: './src/features/teams',
-                            from: './src/features',
-                            except: ['./teams'],
-                        },
-                        {
-                            target: './src/features/users',
-                            from: './src/features',
-                            except: ['./users'],
-                        },
-                        // enforce unidirectional codebase:
 
-                        // e.g. src/app can import from src/features but not the other way around
-                        {
-                            target: './src/features',
-                            from: './src/app',
-                        },
+        languageOptions: {
+            globals: {
+                ...globals.node,
+            },
 
-                        // e.g src/features and src/app can import from these shared modules but not the other way around
-                        {
-                            target: [
-                                './src/components',
-                                './src/hooks',
-                                './src/lib',
-                                './src/types',
-                                './src/utils',
-                            ],
-                            from: ['./src/features', './src/app'],
-                        },
-                    ],
-                },
-            ],
-
-            'import/order': [
-                'error',
-                {
-                    groups: [
-                        'builtin',
-                        'external',
-                        'internal',
-                        'parent',
-                        'sibling',
-                        'index',
-                        'object',
-                    ],
-                    'newlines-between': 'always',
-                    alphabetize: {order: 'asc', caseInsensitive: true},
-                },
-            ],
-            'react-refresh/only-export-components': [
-                'warn',
-                {allowConstantExport: true},
-
-            ],
+            ecmaVersion: "latest",
+            sourceType: "module",
         },
+    },
+    ...fixupConfigRules(
+        compat.extends(
+            "eslint:recommended",
+            "plugin:import/errors",
+            "plugin:import/warnings",
+            "plugin:import/typescript",
+            "plugin:@typescript-eslint/recommended",
+            "plugin:react/recommended",
+            "plugin:react-hooks/recommended",
+            "plugin:jsx-a11y/recommended",
+            "plugin:prettier/recommended",
+            "plugin:testing-library/react",
+            "plugin:jest-dom/recommended",
+            "plugin:tailwindcss/recommended",
+            "plugin:vitest/legacy-recommended",
+        ),
+    ).map((config) => ({
+        ...config,
+        files: ["**/*.ts", "**/*.tsx"],
+    })),
+    {
+        files: ["**/*.ts", "**/*.tsx"],
+
+        languageOptions: {
+            globals: {
+                ...globals.browser,
+                ...globals.node,
+            },
+
+            parser: tsParser,
+        },
+
         settings: {
-            'import/resolver': {
+            react: {
+                version: "detect",
+            },
+
+            "import/resolver": {
                 alias: {
-                    map: [['@', resolve('./src')]], // Match Vite's alias configuration
-                    extensions: ['.js', '.jsx', '.ts', '.tsx'],
+                    map: [["@", path.resolve(__dirname, "src")]], // Replace 'src' with your actual source directory
+                    extensions: [".js", ".jsx", ".ts", ".tsx"], // Add extensions as needed
+                },
+                typescript: {
+                    alwaysTryTypes: true,
+                    project: "./tsconfig.json", // Ensure path to your tsconfig.json
                 },
             },
         },
+
+        rules: {
+            'import/namespace': ['off'],
+            "import/no-restricted-paths": [
+                "error",
+                {
+                    zones: [
+                        {
+                            target: "./src/features/auth",
+                            from: "./src/features",
+                            except: ["./auth"],
+                        },
+                        {
+                            target: "./src/features/comments",
+                            from: "./src/features",
+                            except: ["./comments"],
+                        },
+                        {
+                            target: "./src/features/discussions",
+                            from: "./src/features",
+                            except: ["./discussions"],
+                        },
+                        {
+                            target: "./src/features/teams",
+                            from: "./src/features",
+                            except: ["./teams"],
+                        },
+                        {
+                            target: "./src/features/users",
+                            from: "./src/features",
+                            except: ["./users"],
+                        },
+                        {
+                            target: "./src/features",
+                            from: "./src/app",
+                        },
+                        {
+                            target: [
+                                "./src/components",
+                                "./src/hooks",
+                                "./src/lib",
+                                "./src/types",
+                                "./src/utils",
+                            ],
+
+                            from: ["./src/features", "./src/app"],
+                        },
+                    ],
+                },
+            ],
+
+            "import/no-cycle": "off",
+            "linebreak-style": ["error", "unix"],
+            "react/prop-types": "off",
+            "import/order": [
+                "error",
+                {
+                    groups: [
+                        "builtin",
+                        "external",
+                        "internal",
+                        "parent",
+                        "sibling",
+                        "index",
+                        "object",
+                    ],
+                    "newlines-between": "always",
+
+                    alphabetize: {
+                        order: "asc",
+                        caseInsensitive: true,
+                    },
+                },
+            ],
+
+            "import/default": "off",
+            "import/no-named-as-default-member": "off",
+            "import/no-named-as-default": "off",
+            "react/react-in-jsx-scope": "off",
+            "jsx-a11y/anchor-is-valid": "off",
+            "@typescript-eslint/no-unused-vars": ["error"],
+            "@typescript-eslint/explicit-function-return-type": ["off"],
+            "@typescript-eslint/explicit-module-boundary-types": ["off"],
+            "@typescript-eslint/no-empty-function": ["off"],
+            "@typescript-eslint/no-explicit-any": ["off"],
+
+            "prettier/prettier": [
+                "error",
+                {
+                    // Optional Prettier overrides (e.g., tabs, quotes)
+                    useTabs: true,
+                    tabWidth: 4,
+                    semi: true,
+                    singleQuote: true,
+                },
+            ],
+
+            "check-file/filename-naming-convention": [
+                "error",
+                {
+                    "**/*.{ts,tsx}": "KEBAB_CASE",
+                },
+                {
+                    ignoreMiddleExtensions: true,
+                },
+            ],
+        },
     },
-)
+    {
+        files: ["src/**/!(__tests__)/*"],
+
+        plugins: {
+            "check-file": checkFile,
+        },
+
+        rules: {
+            "check-file/folder-naming-convention": [
+                "error",
+                {
+                    "**/*": "KEBAB_CASE",
+                },
+            ],
+        },
+    },
+];

@@ -25,7 +25,9 @@ export function paginate(props: Props) {
 	const endIndex = Math.min(startIndex + pageSize - 1, totalItems - 1);
 
 	// create an array of pages to ng-repeat in the pager control
-	const pages = Array.from(Array(endPage + 1 - startPage).keys()).map((i) => startPage + i);
+	const pages = Array.from(Array(endPage + 1 - startPage).keys()).map(
+		(i) => startPage + i,
+	);
 
 	return {
 		totalItems: totalItems,

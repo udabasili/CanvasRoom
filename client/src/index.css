@@ -1,3 +1,7 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+* {
+    scrollbar-color: color-mix(in oklch, black, transparent) transparent;
+}
