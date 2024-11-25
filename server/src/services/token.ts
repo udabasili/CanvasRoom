@@ -44,39 +44,36 @@ export class TokenService {
   };
 
   public static async reIssueAccessToken(refreshToken: string) {
-    let customError: IError = {} as IError;
+    let customError: IError = new Error();
 
     try {
-      Logger.silly("Reissuing access token");
-      const payload: JwtPayload = jwt.verify(
-        refreshToken,
-        config.refreshTokenSecret as string,
-      ) as JwtPayload;
-      const refreshTokenFound = await Token.find({
-        where: {
-          refreshToken,
-        },
-        limit: 1,
-        order: [["createdAt", "DESC"]],
+      Logger.silly("Getting refresh token from db");
+      const refreshTokenFound = await Token.findOne({
+        refreshToken: refreshToken,
       });
+      console.log(refreshTokenFound);
       if (!refreshTokenFound) {
         customError.message = "Unauthorized";
         customError.status = 401;
         Logger.debug("Refresh token not found");
         throw customError;
       }
-      const newestRefreshToken = refreshTokenFound[0]?.toJSON().refreshToken;
-      Logger.silly("Newest refresh token issued");
-      const userId = refreshTokenFound[0]?.toJSON().userId;
+
+      const newestRefreshToken = refreshTokenFound.toJSON().refreshToken;
+      const userId = refreshTokenFound?.toJSON().userId;
+      console.log(refreshTokenFound, refreshToken);
 
       if (newestRefreshToken !== refreshToken) {
         customError.message = "Unauthorized";
         customError.status = 401;
-        Logger.debug("Old token.Not valid anymore.");
+        Logger.debug("Old token.Not valid anymore or user not found");
+        throw customError;
       }
+      Logger.silly("Generating new access token");
       return this.generateAccessToken(userId);
     } catch (error) {
-      throw customError;
+      Logger.error(error);
+      throw error;
     }
   }
 }

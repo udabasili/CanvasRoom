@@ -25,12 +25,21 @@ api.interceptors.response.use(
   (response) => response,
   async (error) => {
     const originalRequest = error.config;
-    if (error.response.status === 401 && !originalRequest._retry) {
+    if (
+      error.response.status === 401 &&
+      !originalRequest._retry &&
+      error.response.data.message.toLowerCase().includes('expired')
+    ) {
       originalRequest._retry = true;
       const { data } = await api.get('/auth/refresh-token');
       storage.setToken(data.accessToken);
-      originalRequest.headers.Authorization = `Bearer ${data.accessToken}`;
-      return api(originalRequest);
+      const token = storage.getToken();
+      if (token) {
+        originalRequest.headers.Authorization = `Bearer ${token}`;
+        return api(originalRequest);
+      } else {
+        return Promise.reject(error);
+      }
     }
     return Promise.reject(error);
   },

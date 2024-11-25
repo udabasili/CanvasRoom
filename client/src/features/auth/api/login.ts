@@ -9,8 +9,9 @@ interface LoginCredentialsDTO {
   password: string;
 }
 
-export const login = (
+export const login = async (
   data: LoginCredentialsDTO,
 ): AxiosPromise<UserResponse> => {
-  return apiCall.post('/auth/login', data);
+  const response = apiCall.post('/auth/login', data);
+  return response;
 };
