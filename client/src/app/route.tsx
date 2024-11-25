@@ -1,10 +1,9 @@
-import { ReactNode, useContext, useEffect } from 'react';
+import { ReactNode, useContext } from 'react';
 import {
   createBrowserRouter,
   Navigate,
   RouterProvider,
 } from 'react-router-dom';
-import { io } from 'socket.io-client';
 
 import { Login, Register } from '@/app/routes/auth';
 import { Dashboard } from '@/app/routes/dashboard.tsx';
@@ -45,11 +44,6 @@ const router = createBrowserRouter([
 ]);
 
 export const AppRouter = () => {
-  useEffect(() => {
-    const socket = io(import.meta.env.VITE_SERVER_API_URL);
-    socket.connect();
-  }, []);
-
   console.log(router);
   return <RouterProvider router={router} />;
 };
