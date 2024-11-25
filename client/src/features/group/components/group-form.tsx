@@ -4,8 +4,7 @@ import * as z from 'zod';
 import { Form, Input, SelectField, TextAreaInput } from '@/components/form';
 
 import { programmingLanguages } from '../data/languages';
-
-import { ModalFooter } from './group.styled';
+import { ModalFooter } from '../styles/group.styled.tsx';
 
 const schema = z.object({
   title: z.string().min(1, 'Required'),

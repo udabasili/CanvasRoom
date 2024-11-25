@@ -8,23 +8,12 @@ import confirmAuthentication from "@/api/middlewares/confirmAuthentication";
 import setCurrentUser from "@/api/middlewares/setCurrentUser";
 
 export default (app: Router) => {
-  const route = Router();
+  const route = Router({
+    mergeParams: true,
+  });
   let io;
 
-  //unprotected routes
-  app.get("/groups", async (req, res, next) => {
-    try {
-      const groupServiceInstance = new GroupService();
-      const groups = await groupServiceInstance.getGroups();
-      res.status(200).json({ groups });
-    } catch (e) {
-      const error = e as IError;
-      Logger.error("🔥 error: %o", error);
-      return next(error);
-    }
-  });
-
-  app.use(":userID/group", confirmAuthentication, setCurrentUser, route);
+  app.use("/:userID/groups", confirmAuthentication, setCurrentUser, route);
 
   /**
 	 * Types of groups:
@@ -38,6 +27,20 @@ export default (app: Router) => {
 	 * Under each group we have channels
 
 	 */
+  //get all groups for a user
+  route.get("/", async (req, res, next) => {
+    try {
+      const groupServiceInstance = new GroupService();
+      const groups = await groupServiceInstance.getUserGroups(
+        req.currentUser._id,
+      );
+      res.status(200).json({ groups });
+    } catch (e) {
+      const error = e as IError;
+      Logger.error("🔥 error: %o", error);
+      return next(error);
+    }
+  });
 
   //create group
   route.post(
@@ -93,25 +96,19 @@ export default (app: Router) => {
   );
 
   route.patch(
-    "/:groupId/join/:joiningUserId",
+    "/:groupId/join/",
     celebrate({
       [Segments.PARAMS]: {
-        joiningUserId: Joi.string().required(),
         groupId: Joi.string().required(),
+        userID: Joi.string().required(),
       },
     }),
     async (req, res, next) => {
       try {
-        const { joiningUserId, groupId } = req.params;
+        console.log(req.params);
+        const { userID, groupId } = req.params;
         const groupServiceInstance = new GroupService();
-        const group = await groupServiceInstance.joinGroup(
-          groupId,
-          joiningUserId,
-        );
-        io = getIO();
-        //join group chat
-        io.to(groupId).emit("joinGroup", { userId: joiningUserId, groupId }); // Let the socket server know the user joined
-        io.emit("joinGroup", { userId: joiningUserId, groupId }); // Let the socket server know the user joined
+        const group = await groupServiceInstance.joinGroup(groupId, userID);
         res.status(200).json({ group });
       } catch (e) {
         const error = e as IError;

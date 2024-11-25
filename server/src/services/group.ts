@@ -87,4 +87,13 @@ export class GroupService {
     const groups = await this.group.find();
     return groups.map((group) => group.toObject());
   }
+
+  public async getUserGroups(userId: string) {
+    const groups = await this.group
+      .find({ members: userId })
+      .populate("members", ["firstName", "lastName"])
+      .populate("owner", ["firstName", "lastName"])
+      .populate("channels", ["name"]);
+    return groups.map((group) => group.toObject());
+  }
 }

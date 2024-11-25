@@ -1,37 +1,25 @@
-import { useContext } from 'react';
+import { useContext, useState } from 'react';
 
 import { MainLayout } from '@/components/layout';
 import { Navigation } from '@/components/navigation';
+import { Channel, Channels } from '@/features/channel';
 import {
-  ChannelContainer,
   ChatContainer,
   DashboardContainer,
   HamburgerMenu,
-  CloseButton,
 } from '@/features/dashboard';
 import { GroupSidebar } from '@/features/group';
 import { ThemeContext } from '@/lib/side-drawer-context.tsx';
 
 export const Dashboard = () => {
   const theme = useContext(ThemeContext);
+  const [channels, setChannels] = useState<Channel[]>([]);
 
   return (
     <MainLayout title="Dashboard">
       <DashboardContainer>
-        <GroupSidebar />
-        <ChannelContainer isVisible={theme?.isOpen}>
-          <CloseButton onClick={theme?.close}>
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              viewBox="0 0 24 24"
-              fill="red"
-              width="36px"
-              height="36px"
-            >
-              <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z" />
-            </svg>
-          </CloseButton>
-        </ChannelContainer>
+        <GroupSidebar setChannels={setChannels} />
+        <Channels channels={channels} />
         <ChatContainer>
           <Navigation>
             <HamburgerMenu onClick={theme?.open}>

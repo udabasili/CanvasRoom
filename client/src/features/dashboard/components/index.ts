@@ -1,2 +1,2 @@
 export * from './dashboard';
-export * from './dashboard.styled';
+export * from '../styles/dashboard.styled.tsx';
