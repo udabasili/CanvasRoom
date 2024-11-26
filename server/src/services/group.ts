@@ -93,7 +93,7 @@ export class GroupService {
       .find({ members: userId })
       .populate("members", ["firstName", "lastName"])
       .populate("owner", ["firstName", "lastName"])
-      .populate("channels", ["name"]);
+      .populate("channels", ["name", "type"]);
     return groups.map((group) => group.toObject());
   }
 }
