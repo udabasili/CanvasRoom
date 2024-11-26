@@ -2,7 +2,7 @@ import jwt, { JwtPayload } from "jsonwebtoken";
 import { IUser } from "@/interface/IUser";
 import config from "@/config";
 import { IError } from "@/interface/IError";
-import { Token } from "@/model/token";
+import { Token } from "@/model";
 import Logger from "@/loaders/logger";
 
 /** Generate access token and refresh token */

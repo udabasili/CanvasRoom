@@ -1,5 +1,5 @@
 import Logger from "@/loaders/logger";
-import { Group, GroupModel } from "@/model/group";
+import { Group, GroupModel } from "@/model";
 import { Model, Schema, Types } from "mongoose";
 import { IGroup, IGroupDTO } from "@/interface";
 
