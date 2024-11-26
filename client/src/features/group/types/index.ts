@@ -5,6 +5,7 @@ export type Group = {
   name: string;
   description?: string;
   language?: string;
+  icon?: string;
   members: string[];
   channels: Channel[];
 } & BaseEntity;

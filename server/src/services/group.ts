@@ -73,11 +73,12 @@ export class GroupService {
     });
   }
 
-  public async createGroup({ name, description, language }: IGroupDTO) {
+  public async createGroup({ name, description, language, icon }: IGroupDTO) {
     const group = new Group({
       name,
       description,
       language,
+      icon,
     });
     await group.save();
     return group.toObject();

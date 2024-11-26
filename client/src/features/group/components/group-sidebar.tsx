@@ -41,7 +41,7 @@ export const GroupSidebar = ({ setChannels }: GroupSidebarProps) => {
             onClick={() => setSelectedGroup(group)}
             className={selectedGroup?._id === group._id ? 'selected' : ''}
           >
-            <IoMdAdd size={20} />
+            <i className={`fa-brand ${group.icon} size-16`}></i>
           </CircleIcon>
         ))
       )}

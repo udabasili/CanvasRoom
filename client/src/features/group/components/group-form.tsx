@@ -24,14 +24,12 @@ type GroupFormProps = {
 };
 
 export const GroupForm = ({ onSuccess, goBack }: GroupFormProps) => {
-  // const { login, isLoggingIn } = useAuth();
   const isLoggingIn = false;
 
   return (
     <div>
       <Form<GroupFormValues, typeof schema>
         onSubmit={async (values) => {
-          // await login(values);
           console.log(values);
           onSuccess();
         }}

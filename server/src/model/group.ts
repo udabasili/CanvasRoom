@@ -12,6 +12,9 @@ const groupSchema = new Schema<IGroup, GroupModel, {}>(
     description: {
       type: String,
     },
+    icon: {
+      type: String,
+    },
     language: {
       type: String,
       required: true,

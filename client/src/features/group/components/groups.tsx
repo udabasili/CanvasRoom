@@ -42,7 +42,6 @@ export const Groups = ({ goBack }: GroupsProps) => {
   function joinGroupHandler(selectedGroup: string) {
     if (!user) return;
     setSelectedGroupId(selectedGroup);
-    console.log('Joining group', selectedGroup);
     setLoading(true);
     mutate(
       { groupId: selectedGroup, userId: user._id },
