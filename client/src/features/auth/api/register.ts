@@ -4,11 +4,12 @@ import apiCall from '@/lib/api-call.ts';
 
 import { RegisterCredentialsDTO, UserResponse } from '../types';
 
-export const register = (
+export const register = async (
   data: RegisterCredentialsDTO,
 ): AxiosPromise<UserResponse> => {
   if (data.confirmPassword) {
     delete data['confirmPassword'];
   }
-  return apiCall.post('/auth/register', data);
+  const response = await apiCall.post('/auth/register', data);
+  return response;
 };
