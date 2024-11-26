@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext, useEffect, useRef, useState } from 'react';
 
 import { MainLayout } from '@/components/layout';
 import { Navigation } from '@/components/navigation';
@@ -9,13 +9,22 @@ import {
   DashboardContainer,
   HamburgerMenu,
 } from '@/features/dashboard';
-import { GroupSidebar } from '@/features/group';
+import { Group, GroupSidebar } from '@/features/group';
+import { User } from '@/features/user';
+import { AuthContext, AuthContextType } from '@/lib/auth-context.tsx';
 import { ThemeContext } from '@/lib/side-drawer-context.tsx';
+import { SocketContext } from '@/lib/socket-context.tsx';
+import { GroupSocket } from '@/socket/group-socket.ts';
 
 // Assuming ChannelType is a union of channel names
 
+type Props = {
+  channelId: string;
+  groupId: string;
+};
+
 type ChannelComponentProps = {
-  [key in ChannelType]: React.FC;
+  [key in ChannelType]: React.FC<Props>;
 };
 
 // Map channel types to components
@@ -30,9 +39,14 @@ const COMPONENT_MAP: ChannelComponentProps = {
 };
 
 export const Dashboard = () => {
+  const socket = useContext(SocketContext)?.socket;
+  const groupSocket = useRef<GroupSocket | null>(null);
   const theme = useContext(ThemeContext);
   const [channels, setChannels] = useState<Channel[]>([]);
   const [channel, setChannel] = useState<Channel | null>(null);
+  const [selectedGroup, setSelectedGroup] = useState<Group | null>(null);
+  const { user } = useContext(AuthContext) as AuthContextType;
+
   const [selectedChannelType, setSelectedChannelType] =
     useState<ChannelType | null>(null);
 
@@ -48,10 +62,31 @@ export const Dashboard = () => {
     }
   }, [channel]);
 
+  useEffect(() => {
+    if (selectedGroup) {
+      // join group channel
+      if (socket) {
+        groupSocket.current = new GroupSocket(socket);
+        groupSocket.current.joinGroup(selectedGroup._id, user?._id as string);
+      }
+      setChannels(selectedGroup.channels);
+    }
+    return () => {
+      if (selectedGroup) {
+        // leave group channel
+        groupSocket.current?.leaveGroup(selectedGroup._id, user?._id as string);
+      }
+    };
+  }, [selectedGroup]);
+
   return (
     <MainLayout title="Dashboard">
       <DashboardContainer>
-        <GroupSidebar setChannels={setChannels} />
+        <GroupSidebar
+          setSelectedGroup={setSelectedGroup}
+          selectedGroup={selectedGroup}
+          user={user as User}
+        />
         <Channels
           channels={channels}
           setChannel={setChannel}
@@ -72,7 +107,10 @@ export const Dashboard = () => {
             </HamburgerMenu>
           </Navigation>
           {Component ? (
-            <Component />
+            <Component
+              channelId={channel?._id as string}
+              groupId={selectedGroup?._id as string}
+            />
           ) : (
             <div>Select a channel to display content</div>
           )}

@@ -1,6 +1,6 @@
 import Logger from "@/loaders/logger";
 import { Group, GroupModel } from "@/model";
-import { Model, Schema, Types } from "mongoose";
+import { Types } from "mongoose";
 import { IGroup, IGroupDTO } from "@/interface";
 
 export class GroupService {

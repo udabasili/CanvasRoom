@@ -1,7 +1,7 @@
 import { IError } from "@/interface/IError";
 import Logger from "@/loaders/logger";
 import { Request, Response, NextFunction } from "express";
-import User from "@/model/user";
+import { User } from "@/model";
 
 const setCurrentUser = async (
   req: Request,

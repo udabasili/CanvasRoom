@@ -6,4 +6,4 @@ export * from "./token";
 export * from "./chat";
 export * from "./designFile";
 export * from "./externalResource";
-export * from "./codeFile";
+export * from "./code";
