@@ -3,19 +3,21 @@ import * as z from 'zod';
 
 import { Form, Input, SelectField, TextAreaInput } from '@/components/form';
 
-import { programmingLanguages } from '../data/languages';
+import { iconOptions, programmingLanguages } from '../data/languages';
 import { ModalFooter } from '../styles/group.styled.tsx';
 
 const schema = z.object({
   title: z.string().min(1, 'Required'),
   description: z.string().optional(),
   language: z.string().min(1, 'Required'),
+  icon: z.string().min(1, 'Required'),
 });
 
 type GroupFormValues = {
   title: string;
   description: string;
   language: string;
+  icon: string;
 };
 
 type GroupFormProps = {
@@ -52,6 +54,11 @@ export const GroupForm = ({ onSuccess, goBack }: GroupFormProps) => {
               label="Programming Language"
               options={programmingLanguages}
               registration={register('language')}
+            />
+            <SelectField
+              label="Group Icon"
+              options={iconOptions}
+              registration={register('icon')}
             />
             <ModalFooter className="justify-between">
               <button className="btn" onClick={() => goBack(null)}>

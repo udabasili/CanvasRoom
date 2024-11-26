@@ -3,13 +3,12 @@ import { IoMdAdd } from 'react-icons/io';
 import { IoChatbubblesOutline } from 'react-icons/io5';
 
 import { Channel } from '@/features/channel';
+import { CircleIcon, GroupContainer } from '@/features/group';
 import { useGetUserGroups } from '@/features/group/api/get-user-groups.ts';
 import { GroupModal } from '@/features/group/components/group-modal.tsx';
 import { Group } from '@/features/group/types';
 import { useDisclosure } from '@/hook/use-disclosure.ts';
 import { AuthContext, AuthContextType } from '@/lib/auth-context.tsx';
-
-import { CircleIcon, GroupContainer } from '../styles/group.styled.tsx';
 
 type GroupSidebarProps = {
   setChannels: (channels: Channel[]) => void;
@@ -41,7 +40,8 @@ export const GroupSidebar = ({ setChannels }: GroupSidebarProps) => {
             onClick={() => setSelectedGroup(group)}
             className={selectedGroup?._id === group._id ? 'selected' : ''}
           >
-            <i className={`fa-brand ${group.icon} size-16`}></i>
+            {group.icon}
+            {/* Using the JS icon */}
           </CircleIcon>
         ))
       )}

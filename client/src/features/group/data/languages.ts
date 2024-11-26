@@ -16,3 +16,26 @@ export const programmingLanguages = [
   { value: 'clojure', label: 'Clojure' },
   { value: 'clike', label: 'C#' },
 ];
+
+export const iconOptions = [
+  { value: '📜', label: '📜' },
+  { value: '🐍', label: '🐍' },
+  { value: '🦀', label: '🦀' },
+  { value: '🌐', label: '🌐' },
+  { value: '🗃️', label: '🗃️' },
+  { value: '☕', label: '☕' },
+  { value: '🖥️', label: '🖥️' },
+  { value: '🐘', label: '🐘' },
+  { value: '📝', label: '📝' },
+  { value: '📄', label: '📄' },
+  { value: '🎨', label: '🎨' },
+  { value: '🧵', label: '🧵' },
+  { value: '🎯', label: '🎯' },
+  { value: '🔧', label: '🔧' },
+  { value: '📖', label: '📖' },
+  { value: '🛠️', label: '🛠️' },
+  { value: '🌿', label: '🌿' },
+  { value: '📱', label: '📱' },
+  { value: '📊', label: '📊' },
+  { value: '👨‍💻', label: '👨‍💻' },
+];
