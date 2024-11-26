@@ -33,7 +33,6 @@ export const Groups = ({ goBack }: GroupsProps) => {
   const queryClient = useQueryClient();
 
   useEffect(() => {
-    console.log('Socket', socket);
     if (socket) {
       groupSocket.current = new GroupSocket(socket);
     }

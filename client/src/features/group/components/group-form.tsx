@@ -2,9 +2,9 @@ import clsx from 'clsx';
 import * as z from 'zod';
 
 import { Form, Input, SelectField, TextAreaInput } from '@/components/form';
+import { ModalFooter } from '@/features/group';
 
 import { iconOptions, programmingLanguages } from '../data/languages';
-import { ModalFooter } from '../styles/group.styled.tsx';
 
 const schema = z.object({
   title: z.string().min(1, 'Required'),

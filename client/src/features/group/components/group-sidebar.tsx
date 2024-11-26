@@ -1,29 +1,25 @@
-import { useContext, useEffect, useState } from 'react';
 import { IoMdAdd } from 'react-icons/io';
 import { IoChatbubblesOutline } from 'react-icons/io5';
 
-import { Channel } from '@/features/channel';
 import { CircleIcon, GroupContainer } from '@/features/group';
 import { useGetUserGroups } from '@/features/group/api/get-user-groups.ts';
 import { GroupModal } from '@/features/group/components/group-modal.tsx';
 import { Group } from '@/features/group/types';
+import { User } from '@/features/user';
 import { useDisclosure } from '@/hook/use-disclosure.ts';
-import { AuthContext, AuthContextType } from '@/lib/auth-context.tsx';
 
 type GroupSidebarProps = {
-  setChannels: (channels: Channel[]) => void;
+  setSelectedGroup: (group: Group) => void;
+  selectedGroup: Group | null;
+  user: User;
 };
-export const GroupSidebar = ({ setChannels }: GroupSidebarProps) => {
+export const GroupSidebar = ({
+  setSelectedGroup,
+  selectedGroup,
+  user,
+}: GroupSidebarProps) => {
   const { isOpen, open, close } = useDisclosure();
-  const { user } = useContext(AuthContext) as AuthContextType;
   const { isLoading, groups } = useGetUserGroups(user?._id);
-  const [selectedGroup, setSelectedGroup] = useState<Group | null>(null);
-
-  useEffect(() => {
-    if (selectedGroup) {
-      setChannels(selectedGroup.channels);
-    }
-  }, [selectedGroup]);
 
   return (
     <GroupContainer>
