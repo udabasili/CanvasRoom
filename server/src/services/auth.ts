@@ -1,4 +1,4 @@
-import User, { UserModel } from "@/model/user";
+import { User, UserModel } from "@/model";
 import { ILoginDTO, IUser, IUserInputDTO } from "@/interface/IUser";
 import { TokenService } from "@/services/token";
 import Logger from "@/loaders/logger";

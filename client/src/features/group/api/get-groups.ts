@@ -18,7 +18,6 @@ export const useGetGroups = () => {
     queryKey: ['groups'],
     queryFn: getGroups,
   });
-  console.log(response);
   const groups = response?.groups; // Safeguard in case response is undefined
 
   return { isLoading, error, groups };
