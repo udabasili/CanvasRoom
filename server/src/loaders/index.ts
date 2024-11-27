@@ -12,5 +12,5 @@ export default async ({ expressApp }: { expressApp: Application }) => {
   await expressLoader({ app: expressApp });
   Logger.info("Express loaded");
 
-  await populateGroup();
+  //await populateGroup();
 };

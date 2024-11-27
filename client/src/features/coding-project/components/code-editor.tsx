@@ -5,6 +5,7 @@ import React, { useContext, useEffect, useRef } from 'react';
 import { useGetCode } from '@/features/coding-project';
 import { AuthContext, AuthContextType } from '@/lib/auth-context.tsx';
 import { SocketContext, SocketContextType } from '@/lib/socket-context.tsx';
+import { ChannelSocket } from '@/socket/channel-socket.ts';
 import { CodingProjectSocket } from '@/socket/coding-project-socket.ts';
 
 type CodeEditorProps = {
@@ -15,6 +16,7 @@ export const CodeEditor = ({ channelId, groupId }: CodeEditorProps) => {
   const { socket } = useContext(SocketContext) as SocketContextType;
   const { user } = useContext(AuthContext) as AuthContextType;
   const codeSocket = useRef<CodingProjectSocket | null>(null);
+  const channelSocket = useRef<ChannelSocket | null>(null);
   const [value, setValue] = React.useState<string>('');
 
   const { isLoading, error, code } = useGetCode({
@@ -25,20 +27,24 @@ export const CodeEditor = ({ channelId, groupId }: CodeEditorProps) => {
 
   useEffect(() => {
     if (!isLoading && !error && code) {
-      console.log('Code', code);
       setValue(code as string);
     }
   }, [isLoading, error, code]);
 
   useEffect(() => {
     if (socket) {
-      codeSocket.current?.joinCodingProject(groupId, channelId);
+      channelSocket.current?.joinChannel(
+        groupId,
+        channelId,
+        user?._id as string,
+      );
     }
   }, [socket]);
 
   useEffect(() => {
     if (socket) {
       codeSocket.current = new CodingProjectSocket(socket);
+      channelSocket.current = new ChannelSocket(socket);
     }
   }, [socket]);
 
@@ -66,11 +72,21 @@ export const CodeEditor = ({ channelId, groupId }: CodeEditorProps) => {
   }
 
   return (
-    <CodeMirror
-      value={value}
-      height="200px"
-      extensions={[javascript({ jsx: true })]}
-      onChange={onChange}
-    />
+    <div className="size-full">
+      {isLoading ? (
+        <span className="loading loading-bars loading-md"></span>
+      ) : (
+        <div className="size-full">
+          <CodeMirror
+            value={value}
+            width={'100%'}
+            height={'100%'}
+            className="size-full"
+            extensions={[javascript({ jsx: true })]}
+            onChange={onChange}
+          />
+        </div>
+      )}
+    </div>
   );
 };

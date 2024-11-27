@@ -9,6 +9,7 @@ import {
   DashboardContainer,
   HamburgerMenu,
 } from '@/features/dashboard';
+import { DesignCanvas } from '@/features/design-project';
 import { Group, GroupSidebar } from '@/features/group';
 import { User } from '@/features/user';
 import { AuthContext, AuthContextType } from '@/lib/auth-context.tsx';
@@ -24,18 +25,18 @@ type Props = {
 };
 
 type ChannelComponentProps = {
-  [key in ChannelType]: React.FC<Props>;
+  [key in ChannelType]: React.FC<Props> | null;
 };
 
 // Map channel types to components
 const COMPONENT_MAP: ChannelComponentProps = {
-  ask_questions: CodeEditor,
-  share_resources: CodeEditor,
-  project_ideas: CodeEditor,
+  ask_questions: null,
+  share_resources: null,
+  project_ideas: null,
   coding_project: CodeEditor,
-  design_project: CodeEditor,
-  faq: CodeEditor,
-  external_resources: CodeEditor,
+  design_project: DesignCanvas,
+  faq: null,
+  external_resources: null,
 };
 
 export const Dashboard = () => {
