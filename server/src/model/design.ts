@@ -1,24 +1,21 @@
 import { IDesign } from "@/interface/IDesign";
 import { model, Model, Schema } from "mongoose";
 
-export type DesignFileModel = Model<IDesign, {}, {}>;
+export type DesignModel = Model<IDesign, {}, {}>;
 
-const designFileSchema = new Schema<IDesign, DesignFileModel, {}>(
+const designSchema = new Schema<IDesign, DesignModel, {}>(
   {
     channel: { type: Schema.Types.ObjectId, ref: "Channel" },
-    canvasData: { type: Schema.Types.Mixed, required: true }, // Stores JSON data of the canvas
+    canvasData: { type: Schema.Types.Mixed }, // Stores JSON data of the canvas
   },
   {
     timestamps: true,
   },
 );
 
-designFileSchema.pre("save", function (next) {
+designSchema.pre("save", function (next) {
   this.updatedAt = new Date();
   next();
 });
 
-export const Design = model<IDesign, DesignFileModel>(
-  "Design",
-  designFileSchema,
-);
+export const Design = model<IDesign, DesignModel>("Design", designSchema);
