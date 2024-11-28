@@ -10,4 +10,12 @@ export class ChannelSocket {
   public joinChannel(codingProjectId: string, groupId: string, userId: string) {
     this.socket.emit('joinChannel', { codingProjectId, groupId, userId });
   }
+
+  public leaveChannel(
+    codingProjectId: string,
+    groupId: string,
+    userId: string,
+  ) {
+    this.socket.emit('leaveChannel', { codingProjectId, groupId, userId });
+  }
 }

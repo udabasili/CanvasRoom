@@ -1,6 +1,6 @@
 import auth from "./routes/auth";
 import group from "./routes/group";
-import channel from "./routes/channel";
+import code from "./routes/code";
 import { Router } from "express";
 import user from "@/api/routes/user";
 import { errors } from "celebrate";
@@ -12,7 +12,7 @@ export default () => {
   publicRoute(app);
   auth(app);
   group(app);
-  channel(app);
+  code(app);
   user(app);
   app.use(errors());
   return app;

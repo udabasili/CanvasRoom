@@ -15,6 +15,18 @@ const joinChannel = async ({ socket }: { socket: Socket }) => {
       socket.to(room).emit("joinChannel", userId);
     },
   );
+
+  //leave channel
+  socket.on(
+    "leaveChannel",
+    (data: { codingProjectId: string; groupId: string; userId: string }) => {
+      const room = data.codingProjectId + data.groupId;
+      const userId = data.userId;
+      socket.leave(room);
+      Logger.info(`User  ${userId} left  room ${room}`);
+      socket.to(room).emit("leaveChannel", userId);
+    },
+  );
 };
 
 export default async ({ socket }: { socket: Socket }) => {
