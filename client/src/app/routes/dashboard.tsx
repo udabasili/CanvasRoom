@@ -13,11 +13,9 @@ import { DesignCanvas } from '@/features/design-project';
 import { Group, GroupSidebar } from '@/features/group';
 import { User } from '@/features/user';
 import { AuthContext, AuthContextType } from '@/lib/auth-context.tsx';
-import { ThemeContext } from '@/lib/side-drawer-context.tsx';
+import { SideSectionContext } from '@/lib/side-drawer-context.tsx';
 import { SocketContext } from '@/lib/socket-context.tsx';
 import { GroupSocket } from '@/socket/group-socket.ts';
-
-// Assuming ChannelType is a union of channel names
 
 type Props = {
   channelId: string;
@@ -42,7 +40,7 @@ const COMPONENT_MAP: ChannelComponentProps = {
 export const Dashboard = () => {
   const socket = useContext(SocketContext)?.socket;
   const groupSocket = useRef<GroupSocket | null>(null);
-  const theme = useContext(ThemeContext);
+  const sideSectionContext = useContext(SideSectionContext);
   const [channels, setChannels] = useState<Channel[]>([]);
   const [channel, setChannel] = useState<Channel | null>(null);
   const [selectedGroup, setSelectedGroup] = useState<Group | null>(null);
@@ -56,19 +54,25 @@ export const Dashboard = () => {
     ? COMPONENT_MAP[selectedChannelType]
     : null;
 
-  // Update the selected channel type when `channel` changes
   useEffect(() => {
     if (channel) {
       setSelectedChannelType(channel.type);
+    } else {
+      setSelectedChannelType(null);
     }
   }, [channel]);
 
   useEffect(() => {
+    // reset channels and channel when group changes
+    setChannels([]);
+    setChannel(null);
+
     if (selectedGroup) {
       // join group channel
       if (socket) {
         groupSocket.current = new GroupSocket(socket);
         groupSocket.current.joinGroup(selectedGroup._id, user?._id as string);
+        sideSectionContext?.open();
       }
       setChannels(selectedGroup.channels);
     }
@@ -92,10 +96,11 @@ export const Dashboard = () => {
           channels={channels}
           setChannel={setChannel}
           selectedChanel={channel}
+          groupName={selectedGroup?.name as string}
         />
         <ChatContainer>
           <Navigation>
-            <HamburgerMenu onClick={theme?.open}>
+            <HamburgerMenu onClick={sideSectionContext?.open}>
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 viewBox="0 0 24 24"
@@ -113,7 +118,9 @@ export const Dashboard = () => {
               groupId={selectedGroup?._id as string}
             />
           ) : (
-            <div>Select a channel to display content</div>
+            <div>
+              Select a group icon the left and then a channel to get started
+            </div>
           )}
         </ChatContainer>
       </DashboardContainer>

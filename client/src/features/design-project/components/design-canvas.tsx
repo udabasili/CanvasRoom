@@ -5,67 +5,157 @@ import {
   Square2StackIcon,
   PencilSquareIcon,
 } from '@heroicons/react/24/solid';
-import { Textbox } from 'fabric'; // browser
+import { Textbox, Circle, Rect, Line } from 'fabric'; // browser
 import { FabricJSCanvas, useFabricJSEditor } from 'fabricjs-react';
 import { useContext, useEffect, useRef } from 'react';
+import { v1 as uuid } from 'uuid';
 
+import { useDesignSocket } from '@/features/coding-project/hook/use-design-socket.ts';
 import { DesignCanvasContainer } from '@/features/design-project/styles/index.styled.ts';
+import { AuthContext, AuthContextType } from '@/lib/auth-context.tsx';
 import { SocketContext, SocketContextType } from '@/lib/socket-context.tsx';
-import { DesignSocket } from '@/socket/design-socket.ts';
+import { ChannelSocket } from '@/socket/channel-socket.ts';
 
-export const DesignCanvas = () => {
+type DesignCanvasProps = {
+  channelId: string;
+  groupId: string;
+};
+
+export const DesignCanvas = ({ channelId, groupId }: DesignCanvasProps) => {
   const { editor, onReady } = useFabricJSEditor();
-  const designSocket = useRef<DesignSocket | null>(null);
   const { socket } = useContext(SocketContext) as SocketContextType;
+  const { user } = useContext(AuthContext) as AuthContextType;
+  const { addObj, modifyObj, designSocket } = useDesignSocket();
+  const channelSocket = useRef<ChannelSocket | null>(null);
 
   useEffect(() => {
     if (socket) {
-      designSocket.current = new DesignSocket(socket);
+      channelSocket.current = new ChannelSocket(socket);
     }
   }, [socket]);
 
+  useEffect(() => {
+    if (channelSocket.current) {
+      channelSocket.current.joinChannel(
+        groupId,
+        channelId,
+        user?._id as string,
+      );
+    }
+    return () => {
+      if (channelSocket.current) {
+        channelSocket.current.leaveChannel(
+          groupId,
+          channelId,
+          user?._id as string,
+        );
+      }
+    };
+  }, [channelSocket.current]);
+
+  useEffect(() => {
+    if (editor) {
+      editor.canvas.on('object:modified', function (options) {
+        console.log(options);
+        if (options.target) {
+          const modifiedObj = {
+            ...options.target.toObject(),
+            id: (options.target as any).id, // Include id here
+          };
+          designSocket.current?.designUpdatedEmitter(
+            groupId,
+            channelId,
+            user?._id as string,
+            modifiedObj,
+          );
+        }
+      });
+
+      editor.canvas.on('object:moving', function (options) {
+        console.log(options);
+        if (options.target) {
+          const modifiedObj = {
+            obj: options.target,
+            id: (options.target as any).id,
+          };
+          designSocket.current?.designUpdatedEmitter(
+            groupId,
+            channelId,
+            user?._id as string,
+            modifiedObj,
+          );
+        }
+      });
+
+      modifyObj(editor);
+      addObj(editor);
+    }
+  }, [editor?.canvas]);
+
   const addShape = (shape: string) => {
     if (!editor) return;
+    let object: any;
     switch (shape) {
       case 'circle':
-        editor.addCircle();
+        object = new Circle({
+          radius: 50,
+          fill: 'red',
+          left: 100,
+          top: 100,
+          id: uuid(),
+        });
         break;
       case 'rectangle':
-        editor.addRectangle();
+        object = new Rect({
+          width: 100,
+          height: 100,
+          fill: 'blue',
+          left: 100,
+          id: uuid(),
+        });
         break;
-      case 'line':
-        editor.addLine();
+      case 'line': {
+        const line = {
+          x1: 100,
+          y1: 100,
+          x2: 100,
+          y2: 200,
+          stroke: 'black',
+          strokeWidth: 2,
+        };
+        object = new Line([line.x1, line.y1, line.x2, line.y2], {
+          stroke: line.stroke,
+          strokeWidth: line.strokeWidth,
+          id: uuid(),
+        });
+
         break;
+      }
       case 'text':
-        editor.canvas.add(
-          new Textbox('Type here', {
-            left: 100,
-            top: 100,
-            width: 200,
-            fontSize: 20,
-          }),
-        );
+        object = new Textbox('Hello World', {
+          left: 100,
+          top: 100,
+          fill: 'black',
+          id: uuid(),
+        });
         break;
       default:
         break;
     }
+    if (object) {
+      object.id = uuid();
+      editor.canvas.add(object);
+      editor.canvas.renderAll();
+      designSocket.current?.designAddedEmitter(
+        groupId,
+        channelId,
+        user?._id as string,
+        { ...object.toObject(), id: object.id },
+      );
+    }
   };
 
   const clearCanvas = () => editor?.canvas.clear();
-
-  const downloadCanvas = () => {
-    if (!editor) return;
-
-    const dataURL = editor.canvas.toDataURL({
-      format: 'png',
-      multiplier: 2,
-    });
-
-    const link = document.createElement('a');
-    link.href = dataURL;
-    link.download = 'canvas.png';
-    link.click();
-  };
 
   return (
     <DesignCanvasContainer>
@@ -77,7 +167,6 @@ export const DesignCanvas = () => {
       </p>
 
       <div className="mb-6 flex gap-4">
-        {/* Add Shape Buttons */}
         <button onClick={() => addShape('circle')} className="icon-button">
           <PencilSquareIcon className="size-6 text-secondary" />
         </button>
@@ -95,11 +184,6 @@ export const DesignCanvas = () => {
 
         <button onClick={clearCanvas} className="icon-button">
           <TrashIcon className="size-6 text-red-500" />
-        </button>
-
-        {/* Download Canvas */}
-        <button onClick={downloadCanvas} className="icon-button">
-          <ArrowPathIcon className="size-6 text-green-500" />
         </button>
       </div>
 
