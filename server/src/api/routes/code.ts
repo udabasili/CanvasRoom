@@ -8,7 +8,7 @@ export default (app: Router) => {
     mergeParams: true,
   });
   //    await apiCall.get(`${userId}/groups/${groupId}/channels/${channelId}`)
-  app.use("/:userId/channels", route);
+  app.use("/:userId/code", route);
 
   route.get("/:channelId", async (req, res, next) => {
     try {
@@ -22,17 +22,5 @@ export default (app: Router) => {
       Logger.error(errorValue);
       next(errorValue);
     }
-
-    //get channel
   });
-
-  /**
-   * - Ask questions
-   * - Share resources
-   * - Project ideas
-   * - Start coding project and allow others to code
-   * - Design a project
-   * - Frequently asked questions
-   * - External resources (links)
-   */
 };

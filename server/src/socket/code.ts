@@ -1,4 +1,3 @@
-import { getIO } from "@/loaders/socket";
 import { Socket } from "socket.io";
 import Logger from "@/loaders/logger";
 import { CodeService } from "@/services/code";
@@ -8,19 +7,6 @@ type CodeAlongData = {
   codingProjectId: string;
   userId: string;
   value: string;
-};
-
-//join coding project
-const joinCodingProject = async ({ socket }: { socket: Socket }) => {
-  socket.on(
-    "joinCodingProject",
-    (data: { codingProjectId: string; groupId: string }) => {
-      //join room : room id = codingProjectId
-      const room = data.codingProjectId + data.groupId;
-      socket.join(room);
-      Logger.info(`Socket ${socket.id} joined  room ${room}`);
-    },
-  );
 };
 
 const codeListener = async ({ socket }: { socket: Socket }) => {
@@ -40,5 +26,4 @@ const codeListener = async ({ socket }: { socket: Socket }) => {
 
 export default async ({ socket }: { socket: Socket }) => {
   await codeListener({ socket });
-  await joinCodingProject({ socket });
 };
