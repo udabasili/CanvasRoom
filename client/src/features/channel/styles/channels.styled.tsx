@@ -21,7 +21,8 @@ export const ChannelContainer = styled.div<ChannelContainerProps>`
     cursor: pointer;
 
     &.active {
-      opacity: 0.8;
+      background-color: ${colors.primaryColor};
+      color: white;
     }
   }
 

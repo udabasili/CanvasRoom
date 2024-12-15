@@ -15,6 +15,7 @@ export const getCode = async ({
   return getChannel({
     userId,
     channelId,
+    type: 'code',
   });
 };
 
