@@ -24,6 +24,7 @@ export const CloseButton = styled.span`
   position: absolute;
   top: 1rem;
   right: 1rem;
+  z-index: 1000;
   @media ${device.tabletPort} {
     display: block;
   }

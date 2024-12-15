@@ -2,6 +2,7 @@ import React, { useContext, useEffect, useRef, useState } from 'react';
 
 import { MainLayout } from '@/components/layout';
 import { Navigation } from '@/components/navigation';
+import { ChatWindow } from '@/features/ask-questions';
 import { Channel, Channels, ChannelType } from '@/features/channel';
 import { CodeEditor } from '@/features/coding-project';
 import {
@@ -9,7 +10,6 @@ import {
   DashboardContainer,
   HamburgerMenu,
 } from '@/features/dashboard';
-import { DesignCanvas } from '@/features/design-project';
 import { Group, GroupSidebar } from '@/features/group';
 import { User } from '@/features/user';
 import { AuthContext, AuthContextType } from '@/lib/auth-context.tsx';
@@ -28,11 +28,10 @@ type ChannelComponentProps = {
 
 // Map channel types to components
 const COMPONENT_MAP: ChannelComponentProps = {
-  ask_questions: null,
+  ask_questions: ChatWindow,
   share_resources: null,
   project_ideas: null,
   coding_project: CodeEditor,
-  design_project: DesignCanvas,
   faq: null,
   external_resources: null,
 };
