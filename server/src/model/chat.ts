@@ -14,6 +14,10 @@ const chatSchema = new Schema<IChat, ChatModel, {}>(
     url: {
       type: String,
     },
+    status: {
+      type: "string",
+      enum: ["waiting", "sent", "received", "read"],
+    },
   },
   {
     timestamps: true,

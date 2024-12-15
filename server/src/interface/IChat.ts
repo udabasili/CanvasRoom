@@ -6,6 +6,7 @@ export interface IChat extends Document {
   recipient?: string;
   message: string;
   url?: string;
+  status: "waiting" | "sent" | "received" | "read";
 }
 
 export interface IChatInputDTO {
