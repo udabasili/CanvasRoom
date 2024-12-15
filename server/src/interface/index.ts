@@ -1,4 +1,4 @@
-export * from "./IExternalResources";
+export * from "./IShareResources";
 export * from "./IGroup";
 export * from "./IUser";
 export * from "./IChat";

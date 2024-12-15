@@ -4,6 +4,6 @@ export * from "./user";
 export * from "./group";
 export * from "./token";
 export * from "./chat";
-export * from "./design";
-export * from "./externalResource";
+export * from "./shareResource";
 export * from "./code";
+export * from "./questionnaire";
