@@ -43,7 +43,7 @@ export const CircleIcon = styled.div`
   align-items: center;
 
   &.selected {
-    background-color: ${colors.secondaryColor};
+    background-color: white;
   }
 `;
 

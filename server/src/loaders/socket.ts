@@ -1,10 +1,8 @@
 import { Server as HttpServer } from "http";
 import { Server as SocketIOServer, Socket } from "socket.io";
-import { generalChatListener } from "@/socket/chat";
 import groupListener from "@/socket/group";
 import codeListener from "@/socket/code";
 import channelListener from "@/socket/channel";
-import designListener from "@/socket/design";
 
 // Define a type for the socket instance to use elsewhere
 export type IOServer = SocketIOServer;
@@ -32,7 +30,6 @@ export function initializeIO(server: HttpServer): IOServer {
     await channelListener({ socket });
     await groupListener({ socket });
     await codeListener({ socket });
-    await designListener({ socket });
 
     // Example event handling
     socket.on("message", (data) => {

@@ -1,15 +1,16 @@
 import mongoose, { Document } from "mongoose";
 
-export interface IExternalResource extends Document {
+export interface IShareResource extends Document {
   channel: mongoose.Types.ObjectId;
-  url: string;
+  url?: string;
   title: string;
   description?: string;
+  sharedBy: mongoose.Types.ObjectId;
 }
 
-export interface IExternalResourceDTO {
+export interface IShareResourceDTO {
   channel: string;
-  url: string;
+  url?: string;
   title: string;
   description?: string;
 }

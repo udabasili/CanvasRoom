@@ -3,7 +3,6 @@ export const channelTypes = [
   'share_resources',
   'project_ideas',
   'coding_project',
-  'design_project',
   'faq',
   'external_resources',
 ] as const;
@@ -15,7 +14,6 @@ export const channelLabel = {
   share_resources: 'Share Resources',
   project_ideas: 'Project Ideas',
   coding_project: 'Coding Project',
-  design_project: 'Design Project',
   faq: 'FAQ',
   external_resources: 'External Resources',
 };

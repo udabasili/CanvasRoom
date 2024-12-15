@@ -1,3 +1,4 @@
+import 'react-chat-elements/dist/main.css';
 import { ReactNode, useContext } from 'react';
 import {
   createBrowserRouter,

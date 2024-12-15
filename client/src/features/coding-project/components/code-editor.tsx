@@ -18,7 +18,6 @@ export const CodeEditor = ({ channelId, groupId }: CodeEditorProps) => {
   const codeSocket = useRef<CodingProjectSocket | null>(null);
   const channelSocket = useRef<ChannelSocket | null>(null);
   const [value, setValue] = React.useState<string>('');
-
   const { isLoading, error, code } = useGetCode({
     userId: user?._id as string,
     channelId,
@@ -33,20 +32,30 @@ export const CodeEditor = ({ channelId, groupId }: CodeEditorProps) => {
 
   useEffect(() => {
     if (socket) {
+      codeSocket.current = new CodingProjectSocket(socket);
+      channelSocket.current = new ChannelSocket(socket);
+    }
+  }, [socket]);
+
+  useEffect(() => {
+    if (channelSocket) {
       channelSocket.current?.joinChannel(
         groupId,
         channelId,
         user?._id as string,
       );
     }
-  }, [socket]);
 
-  useEffect(() => {
-    if (socket) {
-      codeSocket.current = new CodingProjectSocket(socket);
-      channelSocket.current = new ChannelSocket(socket);
-    }
-  }, [socket]);
+    return () => {
+      if (channelSocket) {
+        channelSocket.current?.leaveChannel(
+          groupId,
+          channelId,
+          user?._id as string,
+        );
+      }
+    };
+  }, [channelSocket]);
 
   useEffect(() => {
     if (codeSocket.current) {
@@ -67,9 +76,6 @@ export const CodeEditor = ({ channelId, groupId }: CodeEditorProps) => {
       );
     }
   }, []);
-  if (isLoading) {
-    return <div>Loading...</div>;
-  }
 
   return (
     <div className="size-full">
