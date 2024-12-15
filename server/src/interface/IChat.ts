@@ -2,18 +2,16 @@ import mongoose, { Document } from "mongoose";
 
 export interface IChat extends Document {
   channel?: string;
-  sender?: string; //recipient and sender for private message and channel is for messages sent on channels
+  sender?: string;
   recipient?: string;
   message: string;
-  createdAt: Date;
-  updatedAt: Date;
+  url?: string;
 }
 
 export interface IChatInputDTO {
   channel?: string;
   sender?: string;
   recipient?: string;
-  message: string;
-  createdAt: Date;
-  updatedAt: Date;
+  message?: string;
+  url?: string;
 }
