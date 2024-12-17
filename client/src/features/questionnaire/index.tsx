@@ -1,2 +1,2 @@
-export * from '../chat/components';
-export * from '@/features/chat/style/index.styled.tsx';
+export * from './components';
+export * from './types';
