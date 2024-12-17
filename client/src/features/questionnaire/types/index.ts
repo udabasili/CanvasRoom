@@ -21,11 +21,9 @@ export interface QuestionDto {
   title: string;
   body?: string;
   channel: string;
-  askedBy: string;
 }
 
 export interface AnswerDto {
   answer: string;
   question: string;
-  answeredBy: string;
 }

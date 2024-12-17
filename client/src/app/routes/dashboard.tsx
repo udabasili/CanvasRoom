@@ -11,6 +11,7 @@ import {
   HamburgerMenu,
 } from '@/features/dashboard';
 import { Group, GroupSidebar } from '@/features/group';
+import { Questionnaire } from '@/features/questionnaire';
 import { User } from '@/features/user';
 import { AuthContext, AuthContextType } from '@/lib/auth-context.tsx';
 import { SideSectionContext } from '@/lib/side-drawer-context.tsx';
@@ -28,7 +29,7 @@ type ChannelComponentProps = {
 
 // Map channel types to components
 const COMPONENT_MAP: ChannelComponentProps = {
-  questionnaire: null,
+  questionnaire: Questionnaire,
   share_resources: null,
   group_chat: ChatWindow,
   coding_project: CodeEditor,
