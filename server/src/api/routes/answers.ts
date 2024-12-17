@@ -2,6 +2,8 @@ import { NextFunction, Router } from "express";
 import confirmAuthentication from "@/api/middlewares/confirmAuthentication";
 import setCurrentUser from "@/api/middlewares/setCurrentUser";
 import { celebrate, Joi } from "celebrate";
+import { IError } from "@/interface";
+import Logger from "@/loaders/logger";
 
 export default (app: Router) => {
   const route = Router({ mergeParams: true });
@@ -27,8 +29,10 @@ export default (app: Router) => {
           answeredBy,
         });
         res.status(201).json({ message: "Answer created successfully" });
-      } catch (error) {
-        next(error);
+      } catch (e) {
+        const error = e as IError;
+        Logger.error("🔥 error: %o", error);
+        return next(error);
       }
     },
   );

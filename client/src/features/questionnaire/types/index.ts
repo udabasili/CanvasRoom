@@ -27,3 +27,7 @@ export interface AnswerDto {
   answer: string;
   question: string;
 }
+
+export type ApiQuestionsResponse = {
+  questions: Question[]; // API returns a 'group' property containing an array of groups
+};

@@ -1,9 +1,9 @@
 import { useQuery } from '@tanstack/react-query';
 
-import { GroupsResponse } from '@/features/group/types';
+import { ApiGroupsResponse } from '@/features/group/types';
 import apiCall from '@/lib/api-call.ts';
 
-const getGroups = async (): Promise<GroupsResponse> => {
+const getGroups = async (): Promise<ApiGroupsResponse> => {
   const response = await apiCall.get('/groups');
   return response.data;
 };
@@ -14,7 +14,7 @@ export const useGetGroups = () => {
     isLoading,
     error,
     data: response,
-  } = useQuery<GroupsResponse>({
+  } = useQuery<ApiGroupsResponse>({
     queryKey: ['groups'],
     queryFn: getGroups,
   });

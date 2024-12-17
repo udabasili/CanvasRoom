@@ -43,8 +43,7 @@ export class Questionnaire {
       .find({})
       .sort({ createdAt: -1 })
       .populate("channel", ["name"])
-      .populate("askedBy", ["name"])
-      .populate("answers", ["answer", "answeredBy"]);
+      .populate("askedBy", ["name"]);
     return questionRecords;
   }
 

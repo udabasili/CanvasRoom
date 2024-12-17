@@ -1,20 +1,62 @@
+import { useEffect } from 'react';
+import { toast } from 'react-toastify';
+
 import {
+  ActionButton,
+  ButtonContainer,
   QuestionDetails,
   QuestionItem,
   QuestionList,
   QuestionTitle,
 } from '@/features/questionnaire';
+import { useGetQuestions } from '@/features/questionnaire/api/get-questions.ts';
 
-export const Questions = () => {
+type QuestionsProps = {
+  userId: string;
+};
+export const Questions = ({ userId }: QuestionsProps) => {
+  const { isLoading, error, questions } = useGetQuestions(userId);
+
+  useEffect(() => {
+    if (error) {
+      toast.error('Failed to fetch questions');
+    }
+    if (!isLoading) {
+      console.log('Questions:', questions);
+    }
+  }, [error, isLoading]);
   return (
     <QuestionList>
-      <QuestionItem>
-        <QuestionTitle>How do I center a div in CSS?</QuestionTitle>
-        <QuestionDetails>
-          Im having trouble with centering a div using CSS. Any help would be
-          appreciated!
-        </QuestionDetails>
-      </QuestionItem>
+      <h2 className="text-center text-4xl font-extrabold dark:text-white">
+        Questionnaire
+      </h2>
+      <p className="mb-6 text-lg font-normal text-gray-500 dark:text-gray-400 sm:px-16 lg:text-xl xl:px-48">
+        Find answers to your technical questions and help others answer theirs.
+      </p>
+      {isLoading ? (
+        <QuestionItem>
+          <QuestionTitle>Loading...</QuestionTitle>
+        </QuestionItem>
+      ) : (
+        questions?.map((question) => (
+          <QuestionItem key={question._id}>
+            <QuestionTitle>{question.title}</QuestionTitle>
+            <QuestionDetails>
+              {question.body
+                ? question.body.length > 100
+                  ? question.body.substring(0, 100) + '...'
+                  : question.body
+                : ''}
+            </QuestionDetails>
+            <ButtonContainer>
+              <button className="btn btn-outline btn-success">
+                View Details
+              </button>
+              <ActionButton>Answer Question</ActionButton>
+            </ButtonContainer>
+          </QuestionItem>
+        ))
+      )}
     </QuestionList>
   );
 };
