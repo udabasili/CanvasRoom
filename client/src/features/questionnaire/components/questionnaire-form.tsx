@@ -1,6 +1,6 @@
 import { zodResolver } from '@hookform/resolvers/zod';
+import { useQueryClient } from '@tanstack/react-query';
 import clsx from 'clsx';
-import { useContext } from 'react';
 import { useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
 import * as z from 'zod';
@@ -8,12 +8,12 @@ import * as z from 'zod';
 import { Modal } from '@/components/elements';
 import { Input } from '@/components/form';
 import { useCreateQuestion } from '@/features/questionnaire';
-import { AuthContext, AuthContextType } from '@/lib/auth-context.tsx';
 
 type QuestionnaireFormProps = {
   show: boolean;
   onClose: () => void;
   channelId: string;
+  userId: string;
 };
 
 const schema = z.object({
@@ -30,9 +30,10 @@ export const QuestionnaireForm = ({
   show,
   onClose,
   channelId,
+  userId,
 }: QuestionnaireFormProps) => {
-  const { user } = useContext(AuthContext) as AuthContextType;
-  const mutation = useCreateQuestion(user?._id as string);
+  const mutation = useCreateQuestion(userId);
+  const queryClient = useQueryClient();
   const { register, handleSubmit, formState } = useForm<QuestionnaireValues>({
     resolver: zodResolver(schema),
     defaultValues: {
@@ -51,6 +52,7 @@ export const QuestionnaireForm = ({
       {
         onSuccess: () => {
           toast.success('Question created successfully');
+          queryClient.invalidateQueries({ queryKey: ['questions'] });
           onClose();
         },
         onError: (error) => {

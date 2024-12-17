@@ -15,13 +15,15 @@ const setCurrentUser = async (
     } else {
       userId = req.userId;
     }
+    Logger.debug("Getting current user");
     console.log(userId);
     const userRecord = await User.findById(userId);
     if (!userRecord) {
       throw new Error("User not found");
     }
-
+    Logger.debug("User found");
     const currentUser = userRecord.toJSON();
+    Logger.debug("Deleting password and email from current user");
     Reflect.deleteProperty(currentUser, "password");
     Reflect.deleteProperty(currentUser, "email");
     Logger.debug("Setting current user");

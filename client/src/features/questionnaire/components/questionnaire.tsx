@@ -1,16 +1,21 @@
+import { useContext } from 'react';
+
 import {
   Header,
   SearchBar,
   QuestionnaireContainer,
+  QuestionnaireForm,
+  Questions,
 } from '@/features/questionnaire';
-import { QuestionnaireForm } from '@/features/questionnaire/components/questionnaire-form.tsx';
 import { useDisclosure } from '@/hook/use-disclosure.ts';
+import { AuthContext, AuthContextType } from '@/lib/auth-context.tsx';
 
 type QuestionnaireProps = {
   channelId: string;
 };
 export const Questionnaire = ({ channelId }: QuestionnaireProps) => {
   const { close, open, isOpen } = useDisclosure();
+  const { user } = useContext(AuthContext) as AuthContextType;
 
   function closeModal() {
     close();
@@ -18,20 +23,20 @@ export const Questionnaire = ({ channelId }: QuestionnaireProps) => {
 
   return (
     <QuestionnaireContainer>
-      <button className="btn" onClick={open}>
-        Add Question
-      </button>
       <QuestionnaireForm
         show={isOpen}
         onClose={closeModal}
+        userId={user?._id as string}
         channelId={channelId}
       />
       <Header>
-        <button>Create Question</button>
         <SearchBar />
+        <button className="btn" onClick={open}>
+          Add Question
+        </button>
       </Header>
-      <h1>Questionnaire</h1>
-      <p>Answer the following questions to get matched with the right group.</p>
+
+      <Questions userId={user?._id as string} />
     </QuestionnaireContainer>
   );
 };
