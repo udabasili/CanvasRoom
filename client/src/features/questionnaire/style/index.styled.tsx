@@ -1,20 +1,17 @@
 import styled from '@emotion/styled';
 
+import colors from '@/constant/colors.ts';
+
 export const QuestionnaireContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  margin: 0 auto;
-  padding: 20px;
+  display: grid;
   width: 100%;
-  max-width: 700px;
   height: 100%;
+  grid-template-rows: max-content 1fr;
 `;
 
 // Header Section
 export const Header = styled.header`
-  background-color: #f48024;
+  background-color: ${colors.primaryColor};
   color: white;
   padding: 10px 20px;
   display: flex;
@@ -28,11 +25,13 @@ export const SearchBar = styled.input`
   width: 300px;
   border-radius: 5px;
   border: 1px solid #ccc;
+  background-color: #ffff;
+  color: #000;
 `;
 
 export const QuestionList = styled.ul`
   list-style: none;
-  padding: 0;
+  padding: 4rem auto;
 `;
 
 export const QuestionItem = styled.li`
@@ -54,4 +53,26 @@ export const QuestionTitle = styled.h2`
 export const QuestionDetails = styled.p`
   font-size: 14px;
   color: #555;
+`;
+
+export const ButtonContainer = styled.div`
+  display: flex;
+  gap: 10px;
+  margin-top: 10px;
+  justify-self: flex-end;
+  justify-content: flex-end;
+`;
+
+export const ActionButton = styled.button`
+  padding: 8px 12px;
+  background-color: ${colors.primaryColor};
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 14px;
+
+  &:hover {
+    background-color: #005fa3;
+  }
 `;

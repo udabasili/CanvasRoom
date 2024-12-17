@@ -10,6 +10,6 @@ export type Group = {
   channels: Channel[];
 } & BaseEntity;
 
-export type GroupsResponse = {
+export type ApiGroupsResponse = {
   groups: Group[]; // API returns a 'group' property containing an array of groups
 };
