@@ -15,4 +15,5 @@ export interface IChatInputDTO {
   recipient?: string;
   message?: string;
   url?: string;
+  status?: "waiting" | "sent" | "received" | "read";
 }

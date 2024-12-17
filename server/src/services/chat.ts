@@ -42,23 +42,23 @@ export class ChatService {
 
   public async getChannelChat() {
     this.logger.silly("Getting chat for channel Id: " + this.channelId);
-    let chatRecord = await this.chatModel.find({
-      channel: new Types.ObjectId(this.channelId),
-    });
-    if (!chatRecord.length) {
-      await this.createChannelChat();
-    }
+    let chatRecord = await this.chatModel
+      .find({
+        channel: new Types.ObjectId(this.channelId),
+      })
+      .populate("sender", ["username"]);
+
     return chatRecord;
   }
 
   public async getPrivateChat(userId: string) {
     this.logger.silly("Getting chat for user: " + userId);
-    const chatRecord = await this.chatModel.find({
-      recipient: userId,
-    });
-    if (!chatRecord.length) {
-      await this.createPrivateChat(userId);
-    }
+    const chatRecord = await this.chatModel
+      .find({
+        recipient: userId,
+      })
+      .populate("sender", ["name"])
+      .populate("recipient", ["name"]);
     return chatRecord;
   }
 
