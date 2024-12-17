@@ -6,8 +6,3 @@ export interface ICode extends Document {
   createdAt: Date;
   updatedAt: Date;
 }
-
-export interface ICodeFileDTO {
-  channel: mongoose.Types.ObjectId;
-  code?: string;
-}

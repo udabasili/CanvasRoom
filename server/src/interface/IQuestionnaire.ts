@@ -2,14 +2,17 @@ import mongoose, { Document } from "mongoose";
 
 export interface IQuestion extends Document {
   id: string;
-  question: string;
+  title: string;
+  body?: string;
   channel: mongoose.Types.ObjectId;
-  answers: mongoose.Types.ObjectId[];
   askedBy: mongoose.Types.ObjectId;
 }
 
-export interface IQuestionInputDTO extends Document {
-  question: string;
+export interface CreateQuestionDto {
+  title: string;
+  body?: string;
+  channel: string;
+  askedBy: string;
 }
 
 export interface IAnswer {
@@ -18,6 +21,8 @@ export interface IAnswer {
   answeredBy: mongoose.Types.ObjectId;
 }
 
-export interface IAnswerInputDTO {
+export interface CreateAnswerDto {
+  question: string;
   answer: string;
+  answeredBy: string;
 }

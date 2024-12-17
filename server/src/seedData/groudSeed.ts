@@ -1,9 +1,9 @@
-import { channelLabel, channelTypes, IGroupDTO } from "@/interface";
+import { channelLabel, channelTypes, CreateGroupDTO } from "@/interface";
 import { Group } from "@/model/group";
 import { Channel } from "@/model/channel";
 import { Types } from "mongoose";
 
-export const sampleGroups: IGroupDTO[] = [
+export const sampleGroups: CreateGroupDTO[] = [
   {
     name: "JavaScript Enthusiasts",
     description: "A group for JavaScript developers to share and learn.",

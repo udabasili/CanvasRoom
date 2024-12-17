@@ -6,8 +6,3 @@ export interface IDesign extends Document {
   createdAt: Date;
   updatedAt: Date;
 }
-
-export interface IDesignDTO {
-  channel: string;
-  canvasData: string;
-}

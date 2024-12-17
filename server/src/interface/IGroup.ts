@@ -12,7 +12,7 @@ export interface IGroup extends Document {
   channels: mongoose.Types.ObjectId[]; // Array of channel IDs
 }
 
-export interface IGroupDTO {
+export interface CreateGroupDTO {
   name: string;
   description?: string;
   language?: string;

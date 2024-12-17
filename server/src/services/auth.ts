@@ -1,5 +1,5 @@
 import { User, UserModel } from "@/model";
-import { ILoginDTO, IUser, IUserInputDTO } from "@/interface/IUser";
+import { LoginUserDto, IUser, CreateUserDto } from "@/interface/IUser";
 import { TokenService } from "@/services/token";
 import Logger from "@/loaders/logger";
 
@@ -18,7 +18,7 @@ export class AuthService {
    * @returns Promise
    * @param userInputDTO
    */
-  public async register(userInputDTO: IUserInputDTO): Promise<{
+  public async register(userInputDTO: CreateUserDto): Promise<{
     user: IUser;
     token: {
       accessToken: string;
@@ -46,7 +46,7 @@ export class AuthService {
     };
   }
 
-  public async login(loginDTO: ILoginDTO): Promise<{
+  public async login(loginDTO: LoginUserDto): Promise<{
     user: IUser;
     token: {
       accessToken: string;

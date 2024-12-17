@@ -1,7 +1,7 @@
 import Logger from "@/loaders/logger";
 import { Group, GroupModel } from "@/model";
 import { Types } from "mongoose";
-import { IGroup, IGroupDTO } from "@/interface";
+import { IGroup, CreateGroupDTO } from "@/interface";
 
 export class GroupService {
   private logger: typeof Logger;
@@ -73,7 +73,12 @@ export class GroupService {
     });
   }
 
-  public async createGroup({ name, description, language, icon }: IGroupDTO) {
+  public async createGroup({
+    name,
+    description,
+    language,
+    icon,
+  }: CreateGroupDTO) {
     const group = new Group({
       name,
       description,

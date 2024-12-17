@@ -1,7 +1,7 @@
 import { Router } from "express";
 import { celebrate, errors, Joi, Segments } from "celebrate";
 import { AuthService } from "@/services/auth";
-import { IUserInputDTO } from "@/interface/IUser";
+import { CreateUserDto } from "@/interface/IUser";
 import Logger from "@/loaders/logger";
 import { TokenService } from "@/services/token";
 import { IError } from "@/interface";
@@ -40,7 +40,7 @@ export default (app: Router) => {
         const authServiceInstance = new AuthService();
         Logger.debug("Calling Register endpoint with body: %o", req.body);
         const { user, token } = await authServiceInstance.register(
-          req.body as IUserInputDTO,
+          req.body as CreateUserDto,
         );
         res.cookie("refreshToken", token.refreshToken, {
           httpOnly: true,
