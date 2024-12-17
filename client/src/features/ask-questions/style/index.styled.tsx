@@ -1,14 +1,14 @@
 import styled from '@emotion/styled';
+import { MessageList } from 'react-chat-elements';
 
 import colors from '@/constant/colors.ts';
 
 export const ChatWindowContainer = styled.div`
-  display: grid;
+  display: flex;
   flex-direction: column;
-  height: 100%;
+  height: 90%;
   width: 100%;
   background-color: #f0f0f0;
-  grid-template-rows: 3rem 1fr 3rem;
 `;
 export const ChatHeader = styled.div`
   display: flex;
@@ -17,15 +17,18 @@ export const ChatHeader = styled.div`
   padding: 0.5rem 1rem;
   background-color: #f0f0f0;
   border-bottom: 1px solid #e0e0e0;
+  height: 10%;
 `;
-export const ChatBody = styled.div`
+export const ChatBody = styled(MessageList)`
   flex: 1;
   overflow-y: auto;
-  padding: 1rem;
+  padding: 0.5rem 1rem;
+  max-height: 80%;
 `;
 export const ChatFooter = styled.div`
   display: flex;
   align-items: center;
   background-color: ${colors.secondaryColor};
   border-top: 1px solid #e0e0e0;
+  height: 10%;
 `;

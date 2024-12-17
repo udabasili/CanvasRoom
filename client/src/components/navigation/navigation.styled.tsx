@@ -9,9 +9,9 @@ export const NavbarContainer = styled.nav`
   background-color: #202225;
   color: #ffffff;
   padding: 0 20px;
-  height: 60px;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
   grid-column: 1 / -1;
+  height: 10%;
 
   @media ${device.tabletPort} {
     justify-content: space-between;

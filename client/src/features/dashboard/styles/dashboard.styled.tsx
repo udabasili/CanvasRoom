@@ -34,6 +34,7 @@ export const ChatContainer = styled.section`
   grid-column: col-start 3 / full-end;
   display: flex;
   flex-direction: column;
+  max-height: 100vh;
   @media ${device.tabletPort} {
     grid-column: side-start / full-end;
   }
