@@ -5,6 +5,7 @@ import {
   CreateAnswerDto,
   CreateQuestionDto,
 } from "@/interface/IQuestionnaire";
+import { Types } from "mongoose";
 
 export class Questionnaire {
   private logger: typeof Logger;
@@ -19,12 +20,21 @@ export class Questionnaire {
 
   public async createQuestion(input: CreateQuestionDto) {
     this.logger.silly("Creating Question of title " + input.title);
-    await this.questionModel.create(input);
+    await this.questionModel.create({
+      title: input.title,
+      body: input.body,
+      channel: new Types.ObjectId(input.channel),
+      askedBy: new Types.ObjectId(input.askedBy),
+    });
   }
 
   public async answerQuestion(input: CreateAnswerDto) {
     this.logger.silly("Creating Answer  of question" + input.question);
-    await this.answerModel.create(input);
+    await this.answerModel.create({
+      answer: input.answer,
+      question: new Types.ObjectId(input.question),
+      answeredBy: new Types.ObjectId(input.answeredBy),
+    });
   }
 
   public async getAllQuestions() {

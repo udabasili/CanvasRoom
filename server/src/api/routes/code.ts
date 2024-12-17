@@ -2,13 +2,15 @@ import { Router } from "express";
 import { CodeService } from "@/services/code";
 import { IError } from "@/interface";
 import Logger from "@/loaders/logger";
+import confirmAuthentication from "@/api/middlewares/confirmAuthentication";
+import setCurrentUser from "@/api/middlewares/setCurrentUser";
 
 export default (app: Router) => {
   const route = Router({
     mergeParams: true,
   });
   //    await apiCall.get(`${userId}/groups/${groupId}/channels/${channelId}`)
-  app.use("/:userId/code", route);
+  app.use("/:userId/code", confirmAuthentication, setCurrentUser, route);
 
   route.get("/:channelId", async (req, res, next) => {
     try {

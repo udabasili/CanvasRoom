@@ -6,6 +6,8 @@ import user from "@/api/routes/user";
 import { errors } from "celebrate";
 import publicRoute from "@/api/routes/public";
 import chat from "@/api/routes/chat";
+import question from "@/api/routes/question";
+import answers from "@/api/routes/answers";
 
 export default () => {
   const app = Router();
@@ -16,6 +18,8 @@ export default () => {
   code(app);
   user(app);
   chat(app);
+  question(app);
+  answers(app);
   app.use(errors());
   return app;
 };
