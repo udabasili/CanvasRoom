@@ -1,7 +1,7 @@
 export const channelTypes = [
-  'ask_questions',
+  'questionnaire',
   'share_resources',
-  'project_ideas',
+  'group_chat',
   'coding_project',
   'faq',
   'external_resources',
@@ -10,9 +10,9 @@ export const channelTypes = [
 export type ChannelType = (typeof channelTypes)[number];
 
 export const channelLabel = {
-  ask_questions: 'Ask Questions',
+  group_chat: 'Group Chat',
   share_resources: 'Share Resources',
-  project_ideas: 'Project Ideas',
+  questionnaire: 'questionnaire',
   coding_project: 'Coding Project',
   faq: 'FAQ',
   external_resources: 'External Resources',

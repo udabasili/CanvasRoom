@@ -2,14 +2,14 @@ import mongoose, { Document } from "mongoose";
 
 export const channelTypes = [
   "group_chat",
-  "ask_questions",
+  "questionnaire",
   "share_resources",
   "coding_project",
 ] as const;
 
 export const channelLabel = {
   group_chat: "Group Chat",
-  ask_questions: "Ask Questions",
+  questionnaire: "Questionnaire",
   share_resources: "Share Resources",
   coding_project: "Coding Project",
 };

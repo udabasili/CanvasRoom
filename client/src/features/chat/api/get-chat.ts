@@ -1,7 +1,8 @@
 import { useQuery } from '@tanstack/react-query';
+import { MessageType } from 'react-chat-elements';
 
 import { getChannel } from '@/features/channel';
-import { Chat } from '@/features/chat/types';
+import { Chat, ChatMessages } from '@/features/chat/types';
 import apiCall from '@/lib/api-call.ts';
 
 type getChatType = {
@@ -21,7 +22,7 @@ export interface IChatInputDTO {
 export const getChannelChat = async ({
   userId,
   channelId,
-}: getChatType): Promise<Chat> => {
+}: getChatType): Promise<ChatMessages> => {
   return getChannel({
     userId,
     channelId,
@@ -43,13 +44,34 @@ export const useGetChannelChat = ({
     isLoading,
     error,
     data: response,
-  } = useQuery<Chat>({
+  } = useQuery<ChatMessages>({
     queryKey: ['channel-chat'],
     queryFn: () => getChannelChat({ userId, channelId, groupId }),
   });
-  const chat = response;
+  const chat = response?.chat;
+  let chatMessages: Array<MessageType> = [];
+  if (chat?.length && chat.length > 0) {
+    chatMessages = chat.map((chat) => ({
+      position: chat.sender?._id === userId ? 'right' : 'left',
+      type: 'text',
+      notch: false,
+      forwarded: false,
+      replyButton: false,
+      removeButton: false,
+      titleColor: 'black',
+      status: chat.status,
+      retracted: false,
+      text: chat.message,
+      date: chat.createdAt,
+      id: chat._id,
+      dateString: new Date(chat.createdAt).toDateString(),
+      title:
+        chat.sender?._id === userId ? 'Me' : (chat.sender?.username as string),
+      focus: true,
+    }));
+  }
 
-  return { isLoading, error, chat };
+  return { isLoading, error, chatMessages };
 };
 
 export const useGetPrivateChat = ({ userId }: { userId: string }) => {

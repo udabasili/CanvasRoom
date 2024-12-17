@@ -7,7 +7,7 @@ import {
   ChatFooter,
   ChatHeader,
   ChatWindowContainer,
-} from '@/features/ask-questions';
+} from '@/features/chat';
 import { useGetChannelChat } from '@/features/chat/api/get-chat.ts';
 import { AuthContext, AuthContextType } from '@/lib/auth-context.tsx';
 import { SocketContext, SocketContextType } from '@/lib/socket-context.tsx';

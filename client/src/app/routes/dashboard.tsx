@@ -2,8 +2,8 @@ import React, { useContext, useEffect, useRef, useState } from 'react';
 
 import { MainLayout } from '@/components/layout';
 import { Navigation } from '@/components/navigation';
-import { ChatWindow } from '@/features/ask-questions';
 import { Channel, Channels, ChannelType } from '@/features/channel';
+import { ChatWindow } from '@/features/chat';
 import { CodeEditor } from '@/features/coding-project';
 import {
   ChatContainer,
@@ -28,9 +28,9 @@ type ChannelComponentProps = {
 
 // Map channel types to components
 const COMPONENT_MAP: ChannelComponentProps = {
-  ask_questions: ChatWindow,
+  questionnaire: null,
   share_resources: null,
-  project_ideas: null,
+  group_chat: ChatWindow,
   coding_project: CodeEditor,
   faq: null,
   external_resources: null,
