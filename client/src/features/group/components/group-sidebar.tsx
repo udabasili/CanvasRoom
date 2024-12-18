@@ -37,7 +37,6 @@ export const GroupSidebar = ({
             className={selectedGroup?._id === group._id ? 'selected' : ''}
           >
             {group.icon}
-            {/* Using the JS icon */}
           </CircleIcon>
         ))
       )}

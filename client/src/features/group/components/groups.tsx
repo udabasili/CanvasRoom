@@ -73,9 +73,13 @@ export const Groups = ({ goBack }: GroupsProps) => {
 
   return (
     <GroupsContainer>
-      <Menu className="h-[30vh] overflow-y-auto">
+      <p className="text-sm font-normal text-black">
+        Join a group by selecting one from the list below
+      </p>
+      <Menu className="my-3 h-[30vh] space-y-3 overflow-y-auto bg-gray-50 p-4">
         {groups?.map((group, index) => (
-          <MenuItem
+          <li
+            className="group flex cursor-pointer items-center rounded-lg bg-gray-200 p-3 text-base font-bold text-gray-900 hover:bg-gray-100 hover:shadow"
             key={index}
             onClick={() =>
               !group.members.includes(user?._id as string) &&
@@ -87,12 +91,14 @@ export const Groups = ({ goBack }: GroupsProps) => {
               {loading && group._id === selectedGroupId ? (
                 <span className="loading loading-spinner"></span>
               ) : group.members.includes(user?._id as string) ? (
-                <FaCheckCircle />
+                <span className="ms-3 inline-flex items-center justify-center rounded bg-black px-2 py-0.5 text-xs font-medium text-gray-200">
+                  Joined
+                </span>
               ) : (
-                <IoChevronForwardOutline />
+                <IoChevronForwardOutline size={20} color={'lightgrey'} />
               )}
             </Arrow>
-          </MenuItem>
+          </li>
         ))}
       </Menu>
 

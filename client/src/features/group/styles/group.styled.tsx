@@ -88,11 +88,11 @@ export const Text = styled.span`
   margin-left: 15px;
   font-size: 16px;
   font-weight: 500;
-  color: lightgray;
+  color: black;
 `;
 
 export const Arrow = styled.div`
-  color: #ffffff;
+  color: black;
   font-size: 18px;
 `;
 

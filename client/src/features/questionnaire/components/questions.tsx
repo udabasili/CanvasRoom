@@ -1,9 +1,11 @@
-import { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
 
 import {
   ActionButton,
+  AnswerQuestion,
   ButtonContainer,
+  Question,
   QuestionBody,
   QuestionDetails,
   QuestionItem,
@@ -17,12 +19,40 @@ type QuestionsProps = {
   userId: string;
   channelId: string;
 };
+
+type Props = {
+  show: boolean;
+  onClose: () => void;
+  selectedQuestion: Question;
+};
+type ComponentType = {
+  [key: string]: React.FC<Props>;
+};
+
+const components: ComponentType = {
+  question_details: QuestionDetails,
+  answer_question: AnswerQuestion,
+};
+
 export const Questions = ({ userId, channelId }: QuestionsProps) => {
   const { isLoading, error, questions } = useGetQuestions(userId, channelId);
-  const { close, isOpen } = useDisclosure();
+  const { close, isOpen, open } = useDisclosure();
+  const [selectedQuestion, setSelectedQuestion] = useState<Question>();
+  const [currentComponent, setCurrentComponent] = useState<
+    'question_details' | 'answer_question' | null
+  >(null);
 
   function closeModal() {
     close();
+  }
+
+  function handleComponentChange(
+    component: 'question_details' | 'answer_question',
+    question: Question,
+  ) {
+    setSelectedQuestion(question);
+    setCurrentComponent(component);
+    open();
   }
 
   useEffect(() => {
@@ -33,9 +63,19 @@ export const Questions = ({ userId, channelId }: QuestionsProps) => {
       console.log('Questions:', questions);
     }
   }, [error, isLoading]);
+
+  const Component = currentComponent ? components[currentComponent] : null;
   return (
     <QuestionList>
-      <QuestionDetails show={isOpen} onClose={closeModal} />
+      {Component && selectedQuestion ? (
+        <Component
+          show={isOpen}
+          onClose={closeModal}
+          selectedQuestion={selectedQuestion}
+        />
+      ) : (
+        ''
+      )}
       <h2 className="text-center text-4xl font-extrabold dark:text-white">
         Questionnaire
       </h2>
@@ -70,10 +110,21 @@ export const Questions = ({ userId, channelId }: QuestionsProps) => {
               </span>
             </div>
             <ButtonContainer>
-              <button className="btn btn-outline btn-success">
+              <button
+                className="btn btn-outline btn-success"
+                onClick={() =>
+                  handleComponentChange('question_details', question)
+                }
+              >
                 View Details
               </button>
-              <ActionButton>Answer Question</ActionButton>
+              <ActionButton
+                onClick={() =>
+                  handleComponentChange('answer_question', question)
+                }
+              >
+                Answer Question
+              </ActionButton>
             </ButtonContainer>
           </QuestionItem>
         ))

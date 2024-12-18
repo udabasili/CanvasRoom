@@ -47,8 +47,8 @@ export const ModalHeader = styled.div`
 
 export const ModalTitle = styled.h3`
   margin: 0;
-  font-size: 1.2rem;
   text-align: center;
+  padding: 2rem;
 `;
 
 export const CloseButton = styled.button`

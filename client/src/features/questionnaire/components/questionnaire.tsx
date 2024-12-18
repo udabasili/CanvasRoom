@@ -35,7 +35,6 @@ export const Questionnaire = ({ channelId }: QuestionnaireProps) => {
           Add Question
         </button>
       </Header>
-
       <Questions userId={user?._id as string} channelId={channelId} />
     </QuestionnaireContainer>
   );

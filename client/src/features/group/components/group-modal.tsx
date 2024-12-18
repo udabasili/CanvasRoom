@@ -1,9 +1,9 @@
-import { FC, useState } from 'react';
+import React, { FC, useState } from 'react';
 import { FaPeopleGroup } from 'react-icons/fa6';
 import { IoAddOutline, IoChevronForwardOutline } from 'react-icons/io5';
 
 import { Modal } from '@/components/elements';
-import { Arrow, IconWrapper, Menu, MenuItem, Text } from '@/features/group';
+import { Arrow, IconWrapper, Menu, Text } from '@/features/group';
 import { GroupForm } from '@/features/group/components/group-form.tsx';
 import { Groups } from '@/features/group/components/groups.tsx';
 
@@ -52,13 +52,20 @@ export const GroupModal = ({ show, onClose }: GroupModalProps) => {
       show={show}
       onClose={closeModal}
       title={
-        menu === 'add' ? 'Create Group' : menu === 'group' ? 'Join Group' : ''
+        menu === 'add'
+          ? 'Create Group'
+          : menu === 'group'
+            ? 'Join Group'
+            : 'Get Started'
       }
       onConfirm={handleConfirm}
     >
       {!menu ? (
-        <Menu>
-          <MenuItem onClick={() => handleMenu('add')}>
+        <Menu className="space-y-3">
+          <li
+            onClick={() => handleMenu('add')}
+            className="group flex cursor-pointer items-center rounded-lg bg-gray-100 p-3 text-base font-bold text-gray-900 hover:bg-gray-100 hover:shadow"
+          >
             <IconWrapper>
               <IoAddOutline size={20} color={'white'} />
             </IconWrapper>
@@ -66,8 +73,11 @@ export const GroupModal = ({ show, onClose }: GroupModalProps) => {
             <Arrow>
               <IoChevronForwardOutline size={20} color={'lightgrey'} />
             </Arrow>
-          </MenuItem>
-          <MenuItem onClick={() => handleMenu('group')}>
+          </li>
+          <li
+            onClick={() => handleMenu('group')}
+            className="group flex cursor-pointer items-center rounded-lg bg-gray-50 p-3 text-base font-bold text-gray-900 hover:bg-gray-100 hover:shadow"
+          >
             <IconWrapper>
               <FaPeopleGroup size={20} color={'white'} />
             </IconWrapper>
@@ -75,7 +85,7 @@ export const GroupModal = ({ show, onClose }: GroupModalProps) => {
             <Arrow>
               <IoChevronForwardOutline size={20} color={'lightgrey'} />
             </Arrow>
-          </MenuItem>
+          </li>
         </Menu>
       ) : (
         Component != null && (
