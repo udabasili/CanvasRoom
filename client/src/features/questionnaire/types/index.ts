@@ -1,9 +1,11 @@
+import { User } from '@/features/user';
+
 export interface Question {
   _id: string;
   title: string;
   body?: string;
   channel: string;
-  askedBy: string;
+  askedBy: User;
   createdAt: string;
   updatedAt: string;
 }
@@ -12,7 +14,7 @@ export interface Answer {
   _id: string;
   answer: string;
   question: string;
-  answeredBy: string;
+  answeredBy: User;
   createdAt: string;
   updatedAt: string;
 }

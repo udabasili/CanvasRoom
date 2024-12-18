@@ -31,46 +31,50 @@ export const SearchBar = styled.input`
 
 export const QuestionList = styled.ul`
   list-style: none;
-  padding: 4rem auto;
+  padding: 4rem 1rem;
+  overflow-y: auto;
 `;
 
 export const QuestionItem = styled.li`
   background-color: #f9f9f9;
   border: 1px solid #ddd;
-  margin: 10px 0;
+  margin: 10px 15px;
   padding: 15px;
   border-radius: 5px;
-  display: flex;
-  flex-direction: column;
+  display: grid;
+  gap: 10px;
+  grid-template-rows: min-content 1fr min-content;
 `;
 
 export const QuestionTitle = styled.h2`
   font-size: 18px;
-  color: #0074cc;
+  color: #000000;
+  font-weight: bolder;
   cursor: pointer;
 `;
 
-export const QuestionDetails = styled.p`
+export const QuestionBody = styled.p`
   font-size: 14px;
   color: #555;
 `;
 
 export const ButtonContainer = styled.div`
   display: flex;
-  gap: 10px;
-  margin-top: 10px;
   justify-self: flex-end;
   justify-content: flex-end;
+  grid-row: 3;
+  grid-column: 1;
 `;
 
 export const ActionButton = styled.button`
-  padding: 8px 12px;
+  padding: 12px 10px;
   background-color: ${colors.primaryColor};
   color: #fff;
   border: none;
   border-radius: 5px;
   cursor: pointer;
   font-size: 14px;
+  margin-left: 10px;
 
   &:hover {
     background-color: #005fa3;
