@@ -1,22 +1,31 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { Link } from 'react-router-dom';
 
 import {
   NavbarContainer,
   NavLinks,
 } from '@/components/navigation/navigation.styled.tsx';
+import { AuthContext } from '@/lib/auth-context.tsx';
 
 type NavigationProps = {
   children: React.ReactNode;
 };
 export const Navigation = ({ children }: NavigationProps) => {
+  const auth = useContext(AuthContext);
   return (
     <NavbarContainer>
       {children}
       <NavLinks>
-        <Link to="#home">Home</Link>
-        <Link to="#features">Features</Link>
-        <Link to="#pricing">Pricing</Link>
+        {auth?.isAuthenticated ? (
+          <>
+            <li>{auth?.user?.username} </li>
+            <li>
+              <button onClick={auth?.logout}>Logout</button>
+            </li>
+          </>
+        ) : (
+          <Link to="/auth">Login</Link>
+        )}
       </NavLinks>
     </NavbarContainer>
   );

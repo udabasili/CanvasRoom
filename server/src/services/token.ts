@@ -76,4 +76,13 @@ export class TokenService {
       throw error;
     }
   }
+
+  public static invalidateRefreshToken = async (
+    refreshToken: string,
+  ): Promise<boolean> => {
+    const tokenRemovedSuccessful = await Token.findOneAndDelete({
+      refreshToken,
+    });
+    return !!tokenRemovedSuccessful;
+  };
 }

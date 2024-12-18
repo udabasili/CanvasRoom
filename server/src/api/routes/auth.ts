@@ -82,4 +82,23 @@ export default (app: Router) => {
       }
     },
   );
+
+  router.get("/logout", async (req, res, next) => {
+    try {
+      const authInstance = new AuthService();
+      Logger.debug("Calling Logout endpoint");
+      const tokenRemoved = await authInstance.logout(
+        req.cookies["x-token-refresh"],
+      );
+      if (!tokenRemoved) {
+        throw new Error("Error logging out");
+      }
+      res.clearCookie("x-token-refresh");
+      res.json({ message: "Logged out" });
+    } catch (e) {
+      const error = e as Error;
+      Logger.error(error.message);
+      return next(error);
+    }
+  });
 };

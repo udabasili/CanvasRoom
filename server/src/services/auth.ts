@@ -84,4 +84,10 @@ export class AuthService {
       },
     };
   }
+
+  public async logout(token: string): Promise<boolean> {
+    this.logger.silly("Invalidating JWT");
+    const tokenDeleted = await this.tokenService.invalidateRefreshToken(token);
+    return tokenDeleted;
+  }
 }
