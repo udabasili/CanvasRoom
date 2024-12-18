@@ -32,8 +32,7 @@ export const AnswerQuestion = ({
         {selectedQuestion.title}
       </h5>
       <p className="text-gray-600">{selectedQuestion.body}</p>
-      <h2 className="mt-4 text-xl font-semibold">Your Answer</h2>
-
+      <h3 className="my-3 text-lg font-semibold">Your Answer</h3>
       <form>
         <div className="my-2">
           <textarea
