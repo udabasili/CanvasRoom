@@ -8,11 +8,11 @@ import Logger from "@/loaders/logger";
 export default (app: Router) => {
   const route = Router({ mergeParams: true });
 
-  app.use("/:userId/answers", confirmAuthentication, setCurrentUser, route);
+  app.use("/:userId/question", confirmAuthentication, setCurrentUser, route);
 
   //answer a question
   route.post(
-    "/",
+    "/answer",
     celebrate({
       body: {
         question: Joi.string().required(),
@@ -31,7 +31,7 @@ export default (app: Router) => {
         res.status(201).json({ message: "Answer created successfully" });
       } catch (e) {
         const error = e as IError;
-        Logger.error("🔥 error: %o", error);
+        Logger.error(error.message);
         return next(error);
       }
     },

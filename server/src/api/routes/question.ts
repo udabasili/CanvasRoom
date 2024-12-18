@@ -70,7 +70,7 @@ export default (app: Router) => {
         res.status(200).json({ answers: answerRecords, answerCount, question });
       } catch (e) {
         const error = e as IError;
-        Logger.error("🔥 error: %o", error);
+        Logger.error(error.message);
         return next(error);
       }
     },

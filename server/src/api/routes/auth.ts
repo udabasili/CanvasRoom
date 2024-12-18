@@ -18,7 +18,7 @@ export default (app: Router) => {
       res.json({ accessToken });
     } catch (e) {
       const error = e as IError;
-      Logger.error("🔥 error: %o", error);
+      Logger.error(error.message);
       return next(error);
     }
   });
@@ -49,7 +49,7 @@ export default (app: Router) => {
         res.json({ user, accessToken: token.accessToken });
       } catch (e) {
         const error = e as Error;
-        Logger.error("🔥 error: %o", error);
+        Logger.error(error.message);
         return next(error);
       }
     },
@@ -77,7 +77,7 @@ export default (app: Router) => {
         res.status(200).json({ user, accessToken: token.accessToken });
       } catch (e) {
         const error = e as Error;
-        Logger.error("🔥 error: %o", error);
+        Logger.error(error.message);
         return next(error);
       }
     },

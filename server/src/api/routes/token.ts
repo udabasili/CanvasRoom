@@ -2,6 +2,7 @@ import Logger from "@/loaders/logger";
 import { Router } from "express";
 import { TokenService } from "@/services/token";
 import confirmAuthentication from "@/api/middlewares/confirmAuthentication";
+import { IError } from "@/interface";
 
 const route = Router();
 export default (app: Router) => {
@@ -20,7 +21,10 @@ export default (app: Router) => {
         httpOnly: true,
       });
       res.status(200).json({});
-    } catch (error) {
+    } catch (err) {
+      const error = err as IError;
+      Logger.error(error.message);
+
       next(error);
     }
   });

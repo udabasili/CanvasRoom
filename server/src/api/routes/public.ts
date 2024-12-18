@@ -15,7 +15,7 @@ export default (app: Router) => {
       res.status(200).json({ groups });
     } catch (e) {
       const error = e as IError;
-      Logger.error("🔥 error: %o", error);
+      Logger.error(error.message);
       return next(error);
     }
   });
