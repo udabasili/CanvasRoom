@@ -6,7 +6,7 @@ import { toast } from 'react-toastify';
 import * as z from 'zod';
 
 import { Modal } from '@/components/elements';
-import { Input } from '@/components/form';
+import { Input, TextAreaInput } from '@/components/form';
 import { useCreateQuestion } from '@/features/questionnaire';
 
 type QuestionnaireFormProps = {
@@ -83,8 +83,7 @@ export const QuestionnaireForm = ({
           registration={register('title')}
           className={'text-black'}
         />
-        <Input
-          type="text"
+        <TextAreaInput
           label="Description"
           error={formState.errors['body']}
           registration={register('body')}

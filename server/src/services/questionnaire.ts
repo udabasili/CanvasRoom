@@ -37,13 +37,15 @@ export class Questionnaire {
     });
   }
 
-  public async getAllQuestions() {
+  public async getAllQuestions(channelID: string) {
     this.logger.silly("Getting all questions");
     const questionRecords = await this.questionModel
-      .find({})
+      .find({
+        channel: new Types.ObjectId(channelID),
+      })
       .sort({ createdAt: -1 })
       .populate("channel", ["name"])
-      .populate("askedBy", ["name"]);
+      .populate("askedBy", ["username"]);
     return questionRecords;
   }
 

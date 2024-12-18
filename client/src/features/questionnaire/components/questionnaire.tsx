@@ -36,7 +36,7 @@ export const Questionnaire = ({ channelId }: QuestionnaireProps) => {
         </button>
       </Header>
 
-      <Questions userId={user?._id as string} />
+      <Questions userId={user?._id as string} channelId={channelId} />
     </QuestionnaireContainer>
   );
 };

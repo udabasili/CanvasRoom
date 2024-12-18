@@ -25,13 +25,13 @@ export default (app: Router) => {
     async (req: express.Request, res: express.Response) => {
       try {
         const { title, body, channel } = req.body;
-        const askedBy = req.currentUser.id;
+        const askedBy = req.currentUser._id;
         const questionInstance = new Questionnaire();
         await questionInstance.createQuestion({
           title,
           body,
-          channel,
           askedBy,
+          channel,
         });
         res.status(200).send("Question created successfully");
       } catch (error) {
@@ -41,12 +41,13 @@ export default (app: Router) => {
   );
 
   route.get(
-    "/",
+    "/:channelId",
     async (req: express.Request, res: express.Response, next: NextFunction) => {
       try {
         Logger.debug("Calling Get Questions endpoint");
+        const { channelId } = req.params;
         const questionInstance = new Questionnaire();
-        const questions = await questionInstance.getAllQuestions();
+        const questions = await questionInstance.getAllQuestions(channelId);
         res.status(200).json({ questions });
       } catch (e) {
         console.log(e);

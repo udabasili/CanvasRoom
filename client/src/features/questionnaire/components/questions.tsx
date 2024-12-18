@@ -4,18 +4,26 @@ import { toast } from 'react-toastify';
 import {
   ActionButton,
   ButtonContainer,
+  QuestionBody,
   QuestionDetails,
   QuestionItem,
   QuestionList,
   QuestionTitle,
 } from '@/features/questionnaire';
 import { useGetQuestions } from '@/features/questionnaire/api/get-questions.ts';
+import { useDisclosure } from '@/hook/use-disclosure.ts';
 
 type QuestionsProps = {
   userId: string;
+  channelId: string;
 };
-export const Questions = ({ userId }: QuestionsProps) => {
-  const { isLoading, error, questions } = useGetQuestions(userId);
+export const Questions = ({ userId, channelId }: QuestionsProps) => {
+  const { isLoading, error, questions } = useGetQuestions(userId, channelId);
+  const { close, isOpen } = useDisclosure();
+
+  function closeModal() {
+    close();
+  }
 
   useEffect(() => {
     if (error) {
@@ -27,6 +35,7 @@ export const Questions = ({ userId }: QuestionsProps) => {
   }, [error, isLoading]);
   return (
     <QuestionList>
+      <QuestionDetails show={isOpen} onClose={closeModal} />
       <h2 className="text-center text-4xl font-extrabold dark:text-white">
         Questionnaire
       </h2>
@@ -41,13 +50,25 @@ export const Questions = ({ userId }: QuestionsProps) => {
         questions?.map((question) => (
           <QuestionItem key={question._id}>
             <QuestionTitle>{question.title}</QuestionTitle>
-            <QuestionDetails>
+            <QuestionBody>
               {question.body
                 ? question.body.length > 100
                   ? question.body.substring(0, 100) + '...'
                   : question.body
                 : ''}
-            </QuestionDetails>
+            </QuestionBody>
+            <div className={`col-start-1 row-start-3`}>
+              {question.askedBy ? (
+                <span className="mr-2 text-xs text-gray-500 dark:text-gray-400">
+                  By {question.askedBy.username}
+                </span>
+              ) : (
+                ''
+              )}
+              <span className="mr-2 text-xs text-gray-500 dark:text-gray-400">
+                {new Date(question.createdAt).toDateString()}
+              </span>
+            </div>
             <ButtonContainer>
               <button className="btn btn-outline btn-success">
                 View Details
