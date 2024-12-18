@@ -4,6 +4,7 @@ import {
   IAnswer,
   CreateAnswerDto,
   CreateQuestionDto,
+  IQuestion,
 } from "@/interface/IQuestionnaire";
 import { Types } from "mongoose";
 
@@ -49,11 +50,36 @@ export class Questionnaire {
     return questionRecords;
   }
 
-  public async getAnswers(questionId: string) {
+  public async getAnswers(questionId: string): Promise<{
+    answerRecords: IAnswer[];
+    question: IQuestion;
+    answerCount: number;
+  }> {
     this.logger.silly("Getting answers for question " + questionId);
+    const questionRecord = await this.questionModel.findById(questionId);
+    if (!questionRecord) {
+      throw new Error("Question not found");
+    }
+    const question = await this.getQuestion(questionId);
     const answerRecords = await this.answerModel
       .find({ question: questionId })
-      .populate("answeredBy", ["name"]);
-    return answerRecords;
+      .populate("answeredBy", ["name"])
+      .populate("question", ["title, description"]);
+    const answerCount = await this.answerModel.countDocuments({
+      question: questionId,
+    });
+    return { answerRecords, answerCount, question };
+  }
+
+  private async getQuestion(questionId: string) {
+    const questionRecord = await this.questionModel
+      .findById(questionId)
+      .populate("channel", ["name"])
+      .populate("askedBy", ["username"]);
+    if (!questionRecord) {
+      throw new Error("Question not found");
+    }
+    const question = questionRecord.toObject();
+    return question;
   }
 }

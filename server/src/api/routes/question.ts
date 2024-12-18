@@ -65,8 +65,9 @@ export default (app: Router) => {
         Logger.debug("Calling Get Answers endpoint");
         const { questionId } = req.params;
         const questionInstance = new Questionnaire();
-        const answers = await questionInstance.getAnswers(questionId);
-        res.status(200).json({ answers });
+        const { answerRecords, answerCount, question } =
+          await questionInstance.getAnswers(questionId);
+        res.status(200).json({ answers: answerRecords, answerCount, question });
       } catch (e) {
         const error = e as IError;
         Logger.error("🔥 error: %o", error);

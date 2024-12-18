@@ -1,23 +1,20 @@
 import { useQueryClient } from '@tanstack/react-query';
 import { useContext, useEffect, useRef, useState } from 'react';
-import { FaCheckCircle } from 'react-icons/fa';
 import { IoChevronForwardOutline } from 'react-icons/io5';
 import { toast } from 'react-toastify';
-
-import { useGetGroups } from '@/features/group/api/get-groups.ts';
-import { useJoinGroup } from '@/features/group/api/join-group.ts';
-import { AuthContext, AuthContextType } from '@/lib/auth-context.tsx';
-import { SocketContext } from '@/lib/socket-context.tsx';
-import { GroupSocket } from '@/socket/group-socket.ts';
 
 import {
   Arrow,
   GroupsContainer,
   Menu,
-  MenuItem,
   ModalFooter,
   Text,
-} from '../styles/group.styled.tsx';
+} from '@/features/group';
+import { useGetGroups } from '@/features/group/api/get-groups.ts';
+import { useJoinGroup } from '@/features/group/api/join-group.ts';
+import { AuthContext, AuthContextType } from '@/lib/auth-context.tsx';
+import { SocketContext } from '@/lib/socket-context.tsx';
+import { GroupSocket } from '@/socket/group-socket.ts';
 
 type GroupsProps = {
   goBack: (e: 'add' | 'group' | null) => void;

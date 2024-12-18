@@ -15,7 +15,7 @@ export const AnswerQuestion = ({
     <Modal
       show={show}
       onClose={onClose}
-      title=""
+      title="Answer Question"
       onConfirm={() => {
         console.log('clicked');
       }}

@@ -33,3 +33,9 @@ export interface AnswerDto {
 export type ApiQuestionsResponse = {
   questions: Question[]; // API returns a 'group' property containing an array of groups
 };
+
+export type ApiQuestionResponse = {
+  answers: Answer[];
+  answerCount: number;
+  question: Question;
+};
