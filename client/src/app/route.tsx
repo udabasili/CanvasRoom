@@ -13,16 +13,21 @@ import { AuthContext, AuthContextType } from '@/lib/auth-context.tsx';
 
 // Protected Route Component
 const ProtectedRoute = ({ children }: { children: ReactNode }) => {
-  const { loading, isAuthenticated } = useContext(
-    AuthContext,
-  ) as AuthContextType;
+  const authContext = useContext(AuthContext) as AuthContextType;
 
-  if (loading) {
+  if (!authContext) {
     return <LoadingPage />;
   }
-  console.log(isAuthenticated);
 
-  return isAuthenticated ? children : <Navigate to="/auth/login" />;
+  if (authContext?.loading) {
+    return <LoadingPage />;
+  }
+
+  return authContext?.isAuthenticated ? (
+    children
+  ) : (
+    <Navigate to="/auth/login" />
+  );
 };
 
 const router = createBrowserRouter([

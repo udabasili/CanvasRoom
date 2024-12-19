@@ -222,3 +222,8 @@ sketch
 /server/src/model/user.js
 /server/src/services/user.js
 /server/public/vite.svg
+
+#env
+/server/.env
+/server/.env.example
+/client/.env

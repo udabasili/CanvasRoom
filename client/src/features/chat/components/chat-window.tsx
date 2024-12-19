@@ -61,9 +61,11 @@ export const ChatWindow = ({ channelId, groupId }: ChatWindowProps) => {
 
   useEffect(() => {
     if (chatSocket.current) {
-      chatSocket.current.channelChatListener(() => {
+      chatSocket.current.channelChatListener(async () => {
         //mutate chatMessages
-        queryClient.invalidateQueries({ queryKey: ['channel-chat'] });
+        await queryClient.invalidateQueries({
+          queryKey: ['channel-chat'],
+        });
       });
     }
   }, [chatSocket]);
@@ -86,7 +88,7 @@ export const ChatWindow = ({ channelId, groupId }: ChatWindowProps) => {
     <ChatWindowContainer>
       <ChatHeader>Chat Window</ChatHeader>
       <ChatBody>
-        {isLoading || !isLoading ? (
+        {isLoading ? (
           <div className="flex flex-col items-center justify-center">
             <span className="loading loading-bars loading-md"></span>
           </div>

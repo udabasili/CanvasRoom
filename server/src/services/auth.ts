@@ -60,7 +60,7 @@ export class AuthService {
     this.logger.silly("Finding User");
 
     if (!userRecord) {
-      throw new ErrorHandler("This User not found", 404);
+      throw new ErrorHandler("Invalid Email/Password", 404);
     }
 
     const passwordValidated: boolean = await userRecord.validatePassword(
@@ -68,7 +68,7 @@ export class AuthService {
     );
     this.logger.silly("Validating Password");
     if (!passwordValidated) {
-      throw new ErrorHandler("Invalid Password", 401);
+      throw new ErrorHandler("Invalid Email/Password", 401);
     }
     this.logger.silly("Generating JWT");
     const accessToken = this.tokenService.generateAccessToken(userRecord.id);

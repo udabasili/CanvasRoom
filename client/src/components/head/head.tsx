@@ -5,10 +5,10 @@ type Head = {
   description?: string;
 };
 export const MainHead = (props: Head) => {
-  const { title = '', description = 'Education App' } = props;
+  const { title = '', description = 'Canvas Room' } = props;
   return (
     <Helmet>
-      <title>{`${title} - Edukator`}</title>
+      <title>{`${title} - CanvasRoom`}</title>
       <meta name="description" content={description} />
     </Helmet>
   );
