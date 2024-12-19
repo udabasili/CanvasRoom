@@ -24,4 +24,5 @@ export default {
   refreshTokenSecret: process.env.REFRESH_TOKEN_SECRET as string,
   accessTokenExpiration: process.env.ACCESS_TOKEN_EXPIRY,
   refreshTokenExpiration: process.env.REFRESH_TOKEN_EXPIRY,
+  appUrl: process.env.APP_URL,
 };

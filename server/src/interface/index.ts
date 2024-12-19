@@ -4,5 +4,5 @@ export * from "./IUser";
 export * from "./IChat";
 export * from "./ICode";
 export * from "./IChannel";
-export * from "./IDesign";
+export * from "./ILIveDrawing";
 export * from "./IError";

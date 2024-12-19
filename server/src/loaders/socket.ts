@@ -4,6 +4,7 @@ import groupListener from "@/socket/group";
 import codeListener from "@/socket/code";
 import channelListener from "@/socket/channel";
 import chatListener from "@/socket/chat";
+import liveDrawing from "@/socket/live-drawing";
 
 // Define a type for the socket instance to use elsewhere
 export type IOServer = SocketIOServer;
@@ -58,6 +59,7 @@ export function initializeIO(server: HttpServer): SocketIOServer {
     await groupListener({ socket });
     await codeListener({ socket });
     await chatListener({ socket });
+    await liveDrawing({ socket });
 
     socket.on("disconnect", () => {
       console.log(`Socket disconnected: ${socket.id}`);
