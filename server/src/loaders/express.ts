@@ -4,12 +4,15 @@ import routes from "@/api";
 import config from "@/config";
 import { isCelebrateError } from "celebrate";
 import cookieParser from "cookie-parser";
+import path from "path";
 import {
   ErrorHandler,
   ErrorHandlerProps,
 } from "@/api/middlewares/errorHandler";
 
 export default ({ app }: { app: Application }) => {
+  app.use(express.static(path.join(__dirname, "../../public")));
+
   app.get("/status", (req, res) => {
     res.status(200).json({ status: "OK" });
   });
@@ -50,5 +53,9 @@ export default ({ app }: { app: Application }) => {
     const error = new Error("Not found");
     res.status(404);
     next(error);
+  });
+  //Put this after all middleware. Otherwise, Heroku will give you 304 page
+  app.get("*", function (req, res) {
+    res.sendFile(path.join(__dirname, "./../public", "index.html"));
   });
 };

@@ -37,8 +37,8 @@ export const LoginForm = ({ onSuccess }: LoginFormProps) => {
   });
 
   useEffect(() => {
-    const modal = document.getElementById('my_modal_1') as HTMLDialogElement;
-    if (modal) {
+    const modal = document.getElementById('help_modal') as HTMLDialogElement;
+    if (modal && !modal.open) {
       modal.showModal();
     }
   }, []);
@@ -63,7 +63,7 @@ export const LoginForm = ({ onSuccess }: LoginFormProps) => {
 
   return (
     <div>
-      <dialog id="my_modal_1" className="modal">
+      <dialog id="help_modal" className="modal">
         <div className="modal-box">
           <h3 className="text-lg font-bold">Hello there!</h3>
           <p className="py-4">

@@ -4,6 +4,7 @@ import setCurrentUser from "@/api/middlewares/setCurrentUser";
 import { celebrate, Joi } from "celebrate";
 import { IError } from "@/interface";
 import Logger from "@/loaders/logger";
+import { Questionnaire } from "@/services/questionnaire";
 
 export default (app: Router) => {
   const route = Router({ mergeParams: true });
@@ -21,9 +22,11 @@ export default (app: Router) => {
     }),
     async (req: any, res: any, next: NextFunction) => {
       try {
+        Logger.debug("Calling Answer Question endpoint");
         const { question, answer } = req.body;
-        const answeredBy = req.currentUser.id;
-        await req.services.questionnaire.answerQuestion({
+        const answeredBy = req.currentUser._id;
+        const questionInstance = new Questionnaire();
+        await questionInstance.answerQuestion({
           question,
           answer,
           answeredBy,

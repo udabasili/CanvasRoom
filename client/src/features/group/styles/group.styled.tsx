@@ -28,6 +28,13 @@ export const GroupContainer = styled.aside`
     height: 10vh;
     z-index: 100;
     flex-direction: row;
+    justify-content: space-around;
+  }
+
+  @media ${device.mobile} {
+    overflow-x: scroll;
+    width: 100%;
+    height: unset;
   }
 `;
 
@@ -45,6 +52,11 @@ export const CircleIcon = styled.div`
   &.selected {
     background-color: white;
   }
+
+  @media ${device.mobile} {
+    width: 2.5rem;
+    height: 2.5rem;
+  }
 `;
 
 /*
@@ -54,23 +66,6 @@ export const CircleIcon = styled.div`
 export const Menu = styled.ul`
   width: 100%;
   height: 100%;
-`;
-
-export const MenuItem = styled.li`
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  color: #ffffff;
-  padding: 10px 15px;
-  border-radius: 10px;
-  margin: 10px 0;
-  cursor: pointer;
-  border: 2px solid lightgray;
-  transition: opacity 0.2s;
-
-  &:hover {
-    opacity: 0.7;
-  }
 `;
 
 export const IconWrapper = styled.div`
