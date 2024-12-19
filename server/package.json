@@ -15,9 +15,6 @@
     "lint:js": "npm run lint:eslint src/",
     "lint:fix": "npm run lint:js -- --fix"
   },
-  "_moduleAliases": {
-    "@": "dist/src"
-  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/udabasili/CanvasRoom.git"
