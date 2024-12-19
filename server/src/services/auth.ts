@@ -1,7 +1,8 @@
 import { User, UserModel } from "@/model";
-import { LoginUserDto, IUser, CreateUserDto } from "@/interface/IUser";
+import { CreateUserDto, IUser, LoginUserDto } from "@/interface/IUser";
 import { TokenService } from "@/services/token";
 import Logger from "@/loaders/logger";
+import { ErrorHandler } from "@/api/middlewares/errorHandler";
 
 export class AuthService {
   private readonly tokenService: typeof TokenService;
@@ -59,7 +60,7 @@ export class AuthService {
     this.logger.silly("Finding User");
 
     if (!userRecord) {
-      throw new Error("User not found");
+      throw new ErrorHandler("This User not found", 404);
     }
 
     const passwordValidated: boolean = await userRecord.validatePassword(
@@ -67,7 +68,7 @@ export class AuthService {
     );
     this.logger.silly("Validating Password");
     if (!passwordValidated) {
-      throw new Error("Password is invalid");
+      throw new ErrorHandler("Invalid Password", 401);
     }
     this.logger.silly("Generating JWT");
     const accessToken = this.tokenService.generateAccessToken(userRecord.id);

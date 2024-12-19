@@ -5,6 +5,7 @@ import { CreateUserDto } from "@/interface/IUser";
 import Logger from "@/loaders/logger";
 import { TokenService } from "@/services/token";
 import { IError } from "@/interface";
+import { errHandler, ErrorHandlerProps } from "@/api/middlewares/errorHandler";
 
 const router = Router();
 
@@ -13,13 +14,13 @@ export default (app: Router) => {
 
   router.get("/refresh-token", async (req, res, next) => {
     try {
+      Logger.debug("Calling Refresh Token endpoint");
       const refreshToken = req.cookies["x-token-refresh"];
       const accessToken = await TokenService.reIssueAccessToken(refreshToken);
       res.json({ accessToken });
     } catch (e) {
-      const error = e as IError;
-      Logger.error(error.message);
-      return next(error);
+      const error = e as ErrorHandlerProps;
+      errHandler(res, error, error.status);
     }
   });
 
@@ -38,7 +39,7 @@ export default (app: Router) => {
     async (req, res, next) => {
       try {
         const authServiceInstance = new AuthService();
-        Logger.debug("Calling Register endpoint with body: %o", req.body);
+        Logger.debug("Calling Register endpoint with body");
         const { user, token } = await authServiceInstance.register(
           req.body as CreateUserDto,
         );
@@ -48,9 +49,8 @@ export default (app: Router) => {
         });
         res.json({ user, accessToken: token.accessToken });
       } catch (e) {
-        const error = e as Error;
-        Logger.error(error.message);
-        return next(error);
+        const error = e as ErrorHandlerProps;
+        errHandler(res, error, error.status);
       }
     },
   );
@@ -66,7 +66,7 @@ export default (app: Router) => {
     async (req, res, next) => {
       try {
         const authServiceInstance = new AuthService();
-        Logger.debug("Calling Login endpoint with body: %o", req.body);
+        Logger.debug("Calling Login endpoint");
         const { user, token } = await authServiceInstance.login(req.body);
         const sevenDays = 7 * 24 * 60 * 60 * 1000; // milliseconds
         res.cookie("x-token-refresh", token.refreshToken, {
@@ -76,9 +76,9 @@ export default (app: Router) => {
         });
         res.status(200).json({ user, accessToken: token.accessToken });
       } catch (e) {
-        const error = e as Error;
-        Logger.error(error.message);
-        return next(error);
+        const error = e as ErrorHandlerProps;
+        Logger.error("Here is the error: %o", error);
+        errHandler(res, error, error.status);
       }
     },
   );
@@ -96,9 +96,8 @@ export default (app: Router) => {
       res.clearCookie("x-token-refresh");
       res.json({ message: "Logged out" });
     } catch (e) {
-      const error = e as Error;
-      Logger.error(error.message);
-      return next(error);
+      const error = e as ErrorHandlerProps;
+      errHandler(res, error, error.status);
     }
   });
 };

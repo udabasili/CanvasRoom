@@ -12,6 +12,5 @@ interface LoginCredentialsDTO {
 export const login = async (
   data: LoginCredentialsDTO,
 ): AxiosPromise<UserResponse> => {
-  const response = apiCall.post('/auth/login', data);
-  return response;
+  return apiCall.post('/auth/login', data);
 };
