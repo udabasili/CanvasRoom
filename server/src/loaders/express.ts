@@ -1,4 +1,4 @@
-import express, { Application, NextFunction } from "express";
+import express, { Application, NextFunction, Request, Response } from "express";
 import cors from "cors";
 import routes from "@/api";
 import config from "@/config";
@@ -11,7 +11,9 @@ import {
 } from "@/api/middlewares/errorHandler";
 
 export default ({ app }: { app: Application }) => {
-  app.use(express.static(path.join(__dirname, "../../public")));
+  if (process.env.NODE_ENV !== "development") {
+    app.use(express.static(path.join(__dirname, "../../public")));
+  }
 
   app.get("/status", (req, res) => {
     res.status(200).json({ status: "OK" });
@@ -33,29 +35,26 @@ export default ({ app }: { app: Application }) => {
 
   /// error handlers
 
-  app.use((req, res, next) => {
-    const error = new ErrorHandler("Not Found", 404);
-    return next(error);
-  });
-
-  app.use((err: ErrorHandlerProps, req: any, res: any, next: any) => {
-    if (isCelebrateError(err)) {
-      const errorBody = err.details.get("body")?.message; // 'details' is a Map()
-      err.message = errorBody || "";
-    }
-    res.status(err.status || 500);
-    return res.json({
-      message: err.message,
-    });
-  });
-
-  app.use((req: any, res: any, next: NextFunction) => {
-    const error = new Error("Not found");
-    res.status(404);
+  app.use((req: Request, res: Response, next: NextFunction) => {
+    const error = new Error("Not found") as ErrorHandlerProps;
+    error.status = 404;
     next(error);
   });
+
+  app.use(
+    (error: ErrorHandler, req: Request, res: Response, next: NextFunction) => {
+      res.status(error.status || 500);
+      res.json({
+        error: {
+          message: error.message,
+        },
+      });
+    },
+  );
   //Put this after all middleware. Otherwise, Heroku will give you 304 page
-  app.get("*", function (req, res) {
-    res.sendFile(path.join(__dirname, "./../public", "index.html"));
-  });
+  if (process.env.NODE_ENV !== "development") {
+    app.get("*", function (req, res) {
+      res.sendFile(path.join(__dirname, "./../public", "index.html"));
+    });
+  }
 };

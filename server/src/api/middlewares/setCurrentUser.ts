@@ -1,7 +1,7 @@
-import { IError } from "@/interface/IError";
 import Logger from "@/loaders/logger";
 import { Request, Response, NextFunction } from "express";
 import { User } from "@/model";
+import { errHandler, ErrorHandlerProps } from "@/api/middlewares/errorHandler";
 
 const setCurrentUser = async (
   req: Request,
@@ -31,12 +31,8 @@ const setCurrentUser = async (
     req.currentUser = currentUser;
     return next();
   } catch (e) {
-    const errorObject = e as IError;
-    Logger.error("🔥 Error", errorObject);
-    return next({
-      message: "UnAuthorized",
-      status: 401,
-    });
+    const error = e as ErrorHandlerProps;
+    errHandler(res, error, error.status);
   }
 };
 
