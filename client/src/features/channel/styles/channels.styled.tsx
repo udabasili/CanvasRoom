@@ -11,6 +11,7 @@ export const ChannelContainer = styled.div<ChannelContainerProps>`
   grid-column: full-start / col-start 3;
   background-color: ${colors.secondaryColor};
   height: 100%;
+  transition: width 0.3s ease-in-out;
 
   ul {
     width: 100%;
@@ -33,6 +34,9 @@ export const ChannelContainer = styled.div<ChannelContainerProps>`
     top: 0;
     z-index: 40;
     width: ${(props) => (props.isVisible ? '50vw' : 0)};
-    transition: width 0.5s;
+  }
+
+  @media ${device.mobile} {
+    width: ${(props) => (props.isVisible ? '100vw' : 0)};
   }
 `;

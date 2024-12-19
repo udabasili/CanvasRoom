@@ -16,10 +16,11 @@ export const Channels = ({
   selectedChanel,
   groupName,
 }: ChannelsType) => {
-  const theme = useContext(SideSectionContext);
+  const sideSection = useContext(SideSectionContext);
+
   return (
-    <ChannelContainer isVisible={theme?.isOpen}>
-      <CloseButton onClick={theme?.close}>
+    <ChannelContainer isVisible={sideSection?.isOpen}>
+      <CloseButton onClick={sideSection?.close}>
         <svg
           xmlns="http://www.w3.org/2000/svg"
           viewBox="0 0 24 24"
