@@ -7,10 +7,10 @@
     "server"
   ],
   "scripts": {
-    "install": "npm install --workspaces",
-    "build": "npm run build --workspace=client && npm run build --workspace=server",
-    "deploy": "npm run install && npm run build",
-    "start": "npm run start --workspace=server"
+    "build:client": "cd client && npm run build",
+    "build:server": "cd server && npm run build",
+    "build": "npm run build:client && npm run build:server",
+    "start": "cd server && npm start"
   },
   "repository": {
     "type": "git",
