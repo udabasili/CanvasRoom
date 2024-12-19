@@ -18,8 +18,8 @@ export const Navigation = ({ children }: NavigationProps) => {
       <NavLinks>
         {auth?.isAuthenticated ? (
           <>
-            <li>{auth?.user?.username} </li>
-            <li>
+            <li className="list-none">{auth?.user?.username} </li>
+            <li className="list-none">
               <button onClick={auth?.logout}>Logout</button>
             </li>
           </>

@@ -15,13 +15,8 @@ export const NavbarContainer = styled.nav`
 
   @media ${device.tabletPort} {
     justify-content: space-between;
+    height: 10vh;
   }
-`;
-
-export const Brand = styled.div`
-  font-size: 1.5rem;
-  font-weight: bold;
-  cursor: pointer;
 `;
 
 export const NavLinks = styled.div`
@@ -30,15 +25,5 @@ export const NavLinks = styled.div`
 
   @media (max-width: 768px) {
     justify-self: end;
-  }
-`;
-
-export const Link = styled.a`
-  color: #ffffff;
-  text-decoration: none;
-  font-size: 1rem;
-
-  &:hover {
-    text-decoration: underline;
   }
 `;

@@ -1,6 +1,7 @@
 import styled from '@emotion/styled';
 
 import colors from '@/constant/colors.ts';
+import { device } from '@/utils/responsive.ts';
 
 export const QuestionnaireContainer = styled.div`
   display: grid;
@@ -17,6 +18,10 @@ export const Header = styled.header`
   display: flex;
   justify-content: space-between;
   align-items: center;
+
+  @media ${device.mobile} {
+    flex-direction: column;
+  }
 `;
 
 export const SearchBar = styled.input`
@@ -27,6 +32,11 @@ export const SearchBar = styled.input`
   border: 1px solid #ccc;
   background-color: #ffff;
   color: #000;
+
+  @media ${device.mobile} {
+    width: 100%;
+    margin-bottom: 10px;
+  }
 `;
 
 export const QuestionList = styled.ul`
@@ -44,6 +54,11 @@ export const QuestionItem = styled.li`
   display: grid;
   gap: 10px;
   grid-template-rows: min-content 1fr min-content;
+
+  @media ${device.mobile} {
+    margin: 10px 0;
+    grid-template-rows: unset;
+  }
 `;
 
 export const QuestionTitle = styled.h2`
@@ -64,6 +79,10 @@ export const ButtonContainer = styled.div`
   justify-content: flex-end;
   grid-row: 3;
   grid-column: 1;
+
+  @media ${device.mobile} {
+    grid-row: unset;
+  }
 `;
 
 export const ActionButton = styled.button`
