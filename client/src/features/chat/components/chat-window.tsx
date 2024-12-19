@@ -62,7 +62,6 @@ export const ChatWindow = ({ channelId, groupId }: ChatWindowProps) => {
   useEffect(() => {
     if (chatSocket.current) {
       chatSocket.current.channelChatListener(async () => {
-        //mutate chatMessages
         await queryClient.invalidateQueries({
           queryKey: ['channel-chat'],
         });
