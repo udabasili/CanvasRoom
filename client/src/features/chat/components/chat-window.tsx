@@ -1,6 +1,6 @@
 import { useQueryClient } from '@tanstack/react-query';
 import React, { useContext, useEffect, useRef } from 'react';
-import { Button, Input } from 'react-chat-elements';
+import { Button, Input, MessageList } from 'react-chat-elements';
 
 import {
   ChatBody,
@@ -85,18 +85,22 @@ export const ChatWindow = ({ channelId, groupId }: ChatWindowProps) => {
   return (
     <ChatWindowContainer>
       <ChatHeader>Chat Window</ChatHeader>
+      <ChatBody>
+        {isLoading || !isLoading ? (
+          <div className="flex flex-col items-center justify-center">
+            <span className="loading loading-bars loading-md"></span>
+          </div>
+        ) : (
+          <MessageList
+            referance={messageListReference}
+            className="message-list"
+            lockable={true}
+            toBottomHeight={'100%'}
+            dataSource={chatMessages}
+          />
+        )}
+      </ChatBody>
 
-      {isLoading ? (
-        <div>Loading...</div>
-      ) : (
-        <ChatBody
-          referance={messageListReference}
-          className="message-list"
-          lockable={true}
-          toBottomHeight={'100%'}
-          dataSource={chatMessages}
-        />
-      )}
       <ChatFooter>
         <Input
           placeholder="Type here..."

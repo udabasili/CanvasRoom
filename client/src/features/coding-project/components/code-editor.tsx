@@ -111,7 +111,9 @@ export const CodeEditor = ({
   return (
     <div className="size-full">
       {isLoading ? (
-        <span className="loading loading-bars loading-md"></span>
+        <div className="flex flex-col items-center justify-center">
+          <span className="loading loading-bars loading-md"></span>
+        </div>
       ) : (
         <div className="size-full">
           <CodeMirror
