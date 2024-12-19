@@ -63,7 +63,7 @@ export class Questionnaire {
     const question = await this.getQuestion(questionId);
     const answerRecords = await this.answerModel
       .find({ question: questionId })
-      .populate("answeredBy", ["name"])
+      .populate("answeredBy", ["username"])
       .populate("question", ["title, description"]);
     const answerCount = await this.answerModel.countDocuments({
       question: questionId,

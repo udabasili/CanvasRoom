@@ -5,7 +5,6 @@ import {
   ActionButton,
   AnswerQuestion,
   ButtonContainer,
-  Question,
   QuestionBody,
   QuestionDetails,
   QuestionItem,
@@ -23,7 +22,8 @@ type QuestionsProps = {
 type Props = {
   show: boolean;
   onClose: () => void;
-  selectedQuestion: Question;
+  selectedQuestion: string;
+  userId: string;
 };
 type ComponentType = {
   [key: string]: React.FC<Props>;
@@ -37,7 +37,7 @@ const components: ComponentType = {
 export const Questions = ({ userId, channelId }: QuestionsProps) => {
   const { isLoading, error, questions } = useGetQuestions(userId, channelId);
   const { close, isOpen, open } = useDisclosure();
-  const [selectedQuestion, setSelectedQuestion] = useState<Question>();
+  const [selectedQuestion, setSelectedQuestion] = useState<string>();
   const [currentComponent, setCurrentComponent] = useState<
     'question_details' | 'answer_question' | null
   >(null);
@@ -48,7 +48,7 @@ export const Questions = ({ userId, channelId }: QuestionsProps) => {
 
   function handleComponentChange(
     component: 'question_details' | 'answer_question',
-    question: Question,
+    question: string,
   ) {
     setSelectedQuestion(question);
     setCurrentComponent(component);
@@ -72,6 +72,7 @@ export const Questions = ({ userId, channelId }: QuestionsProps) => {
           show={isOpen}
           onClose={closeModal}
           selectedQuestion={selectedQuestion}
+          userId={userId}
         />
       ) : (
         ''
@@ -79,7 +80,7 @@ export const Questions = ({ userId, channelId }: QuestionsProps) => {
       <h2 className="text-center text-4xl font-extrabold dark:text-white">
         Questionnaire
       </h2>
-      <p className="mb-6 text-lg font-normal text-gray-500 dark:text-gray-400 sm:px-16 lg:text-xl xl:px-48">
+      <p className="mb-6 text-lg font-normal text-gray-500 sm:px-16 lg:text-xl xl:px-48">
         Find answers to your technical questions and help others answer theirs.
       </p>
       {isLoading ? (
@@ -113,14 +114,14 @@ export const Questions = ({ userId, channelId }: QuestionsProps) => {
               <button
                 className="btn btn-outline btn-success"
                 onClick={() =>
-                  handleComponentChange('question_details', question)
+                  handleComponentChange('question_details', question._id)
                 }
               >
                 View Details
               </button>
               <ActionButton
                 onClick={() =>
-                  handleComponentChange('answer_question', question)
+                  handleComponentChange('answer_question', question._id)
                 }
               >
                 Answer Question
