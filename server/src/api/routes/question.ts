@@ -6,6 +6,7 @@ import confirmAuthentication from "@/api/middlewares/confirmAuthentication";
 import setCurrentUser from "@/api/middlewares/setCurrentUser";
 import { IError } from "@/interface";
 import Logger from "@/loaders/logger";
+import { errHandler, ErrorHandler } from "@/api/middlewares/errorHandler";
 
 export default (app: Router) => {
   const route = Router({
@@ -34,8 +35,9 @@ export default (app: Router) => {
           channel,
         });
         res.status(200).send("Question created successfully");
-      } catch (error) {
-        res.status(400).send(error);
+      } catch (e) {
+        const error = e as ErrorHandler;
+        errHandler(res, error, error.status);
       }
     },
   );
@@ -50,10 +52,8 @@ export default (app: Router) => {
         const questions = await questionInstance.getAllQuestions(channelId);
         res.status(200).json({ questions });
       } catch (e) {
-        console.log(e);
-        const error = e as IError;
-        Logger.error("🔥 error: %o", error);
-        return next(error);
+        const error = e as ErrorHandler;
+        errHandler(res, error, error.status);
       }
     },
   );
@@ -69,9 +69,8 @@ export default (app: Router) => {
           await questionInstance.getAnswers(questionId);
         res.status(200).json({ answers: answerRecords, answerCount, question });
       } catch (e) {
-        const error = e as IError;
-        Logger.error(error.message);
-        return next(error);
+        const error = e as ErrorHandler;
+        errHandler(res, error, error.status);
       }
     },
   );

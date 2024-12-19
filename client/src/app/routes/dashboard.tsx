@@ -31,11 +31,9 @@ type ChannelComponentProps = {
 // Map channel types to components
 const COMPONENT_MAP: ChannelComponentProps = {
   questionnaire: Questionnaire,
-  share_resources: null,
   group_chat: ChatWindow,
   coding_project: CodeEditor,
-  faq: null,
-  external_resources: null,
+  live_drawings: null,
 };
 
 export const Dashboard = () => {
@@ -65,7 +63,6 @@ export const Dashboard = () => {
   }, [channel]);
 
   useEffect(() => {
-    // reset channels and channel when group changes
     setChannels([]);
     setChannel(null);
 
@@ -80,7 +77,6 @@ export const Dashboard = () => {
     }
     return () => {
       if (selectedGroup) {
-        // leave group channel
         groupSocket.current?.leaveGroup(selectedGroup._id, user?._id as string);
       }
     };
@@ -121,7 +117,7 @@ export const Dashboard = () => {
               language={selectedGroup?.language as string}
             />
           ) : (
-            <div>
+            <div className="mt-10 text-center text-black">
               Select a group icon the left and then a channel to get started
             </div>
           )}

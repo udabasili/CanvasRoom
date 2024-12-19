@@ -4,6 +4,7 @@ import { IError } from "@/interface";
 import Logger from "@/loaders/logger";
 import confirmAuthentication from "@/api/middlewares/confirmAuthentication";
 import setCurrentUser from "@/api/middlewares/setCurrentUser";
+import { errHandler, ErrorHandler } from "@/api/middlewares/errorHandler";
 
 export default (app: Router) => {
   const route = Router({
@@ -19,10 +20,9 @@ export default (app: Router) => {
       const codeInstance = new CodeService(channelId);
       const code = await codeInstance.getCodeJSON();
       res.status(200).send(code);
-    } catch (error) {
-      const errorValue: IError = error as IError;
-      Logger.error(errorValue);
-      next(errorValue);
+    } catch (e) {
+      const error = e as ErrorHandler;
+      errHandler(res, error, error.status);
     }
   });
 };

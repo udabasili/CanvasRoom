@@ -6,6 +6,7 @@ import { IError } from "@/interface";
 import { getIO } from "@/loaders/socket";
 import confirmAuthentication from "@/api/middlewares/confirmAuthentication";
 import setCurrentUser from "@/api/middlewares/setCurrentUser";
+import { errHandler, ErrorHandler } from "@/api/middlewares/errorHandler";
 
 export default (app: Router) => {
   const route = Router({
@@ -36,9 +37,8 @@ export default (app: Router) => {
       );
       res.status(200).json({ groups });
     } catch (e) {
-      const error = e as IError;
-      Logger.error("🔥 error: %o", error);
-      return next(error);
+      const error = e as ErrorHandler;
+      errHandler(res, error, error.status);
     }
   });
 
@@ -65,9 +65,8 @@ export default (app: Router) => {
         });
         res.status(200).json({ group });
       } catch (e) {
-        const error = e as IError;
-        Logger.error(error.message);
-        return next(error);
+        const error = e as ErrorHandler;
+        errHandler(res, error, error.status);
       }
     },
   );
@@ -88,9 +87,8 @@ export default (app: Router) => {
         //join group chat
         res.status(200).json({ group });
       } catch (e) {
-        const error = e as IError;
-        Logger.error(error.message);
-        return next(error);
+        const error = e as ErrorHandler;
+        errHandler(res, error, error.status);
       }
     },
   );
@@ -111,9 +109,8 @@ export default (app: Router) => {
         const group = await groupServiceInstance.joinGroup(groupId, userID);
         res.status(200).json({ group });
       } catch (e) {
-        const error = e as IError;
-        Logger.error(error.message);
-        return next(error);
+        const error = e as ErrorHandler;
+        errHandler(res, error, error.status);
       }
     },
   );

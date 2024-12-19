@@ -2,6 +2,7 @@ import { Router } from "express";
 import { GroupService } from "@/services/group";
 import { IError } from "@/interface";
 import Logger from "@/loaders/logger";
+import { errHandler, ErrorHandler } from "@/api/middlewares/errorHandler";
 
 export default (app: Router) => {
   const route = Router();
@@ -14,9 +15,8 @@ export default (app: Router) => {
       const groups = await groupServiceInstance.getGroups();
       res.status(200).json({ groups });
     } catch (e) {
-      const error = e as IError;
-      Logger.error(error.message);
-      return next(error);
+      const error = e as ErrorHandler;
+      errHandler(res, error, error.status);
     }
   });
 };

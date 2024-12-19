@@ -5,6 +5,7 @@ import Logger from "@/loaders/logger";
 import { ChatService } from "@/services/chat";
 import confirmAuthentication from "@/api/middlewares/confirmAuthentication";
 import setCurrentUser from "@/api/middlewares/setCurrentUser";
+import { errHandler, ErrorHandler } from "@/api/middlewares/errorHandler";
 
 export default (app: Router) => {
   const route = Router({
@@ -19,10 +20,9 @@ export default (app: Router) => {
       const chatInstance = new ChatService();
       const chat = await chatInstance.getPrivateChat(userId);
       res.status(200).json(chat);
-    } catch (error) {
-      const errorValue: IError = error as IError;
-      Logger.error(errorValue);
-      next(errorValue);
+    } catch (e) {
+      const error = e as ErrorHandler;
+      errHandler(res, error, error.status);
     }
   });
 
@@ -33,10 +33,9 @@ export default (app: Router) => {
       const chatInstance = new ChatService(channelId);
       const chat = await chatInstance.getChannelChat();
       res.status(200).json({ chat });
-    } catch (error) {
-      const errorValue: IError = error as IError;
-      Logger.error(errorValue);
-      next(errorValue);
+    } catch (e) {
+      const error = e as ErrorHandler;
+      errHandler(res, error, error.status);
     }
   });
 };
