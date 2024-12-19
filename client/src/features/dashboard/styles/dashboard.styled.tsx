@@ -37,5 +37,6 @@ export const ChatContainer = styled.section`
   max-height: 100vh;
   @media ${device.tabletPort} {
     grid-column: side-start / full-end;
+    height: 90vh;
   }
 `;

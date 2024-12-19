@@ -45,7 +45,7 @@ export const Dashboard = () => {
   const [channel, setChannel] = useState<Channel | null>(null);
   const [selectedGroup, setSelectedGroup] = useState<Group | null>(null);
   const { user } = useContext(AuthContext) as AuthContextType;
-
+  const sideSection = useContext(SideSectionContext);
   const [selectedChannelType, setSelectedChannelType] =
     useState<ChannelType | null>(null);
 
@@ -57,6 +57,7 @@ export const Dashboard = () => {
   useEffect(() => {
     if (channel) {
       setSelectedChannelType(channel.type);
+      sideSection?.close();
     } else {
       setSelectedChannelType(null);
     }
