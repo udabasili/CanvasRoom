@@ -26,7 +26,7 @@ export const AuthLayout = ({
         ])}
       >
         <div className="grid w-full max-w-6xl items-center gap-4  md:grid-cols-2">
-          <div className="max-w-md rounded-lg border border-secondaryColor bg-secondaryColor p-6 shadow-[0_2px_22px_-4px_rgba(93,96,127,0.2)] max-md:mx-auto">
+          <div className="max-w-md rounded-lg border border-white bg-white p-6 shadow-[0_2px_22px_-4px_rgba(93,96,127,0.2)] max-md:mx-auto">
             {children}
           </div>
         </div>

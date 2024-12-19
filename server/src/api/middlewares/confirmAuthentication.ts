@@ -2,7 +2,11 @@ import config from "@/config";
 import { NextFunction, Request, Response } from "express";
 import jwt, { TokenExpiredError } from "jsonwebtoken";
 import Logger from "@/loaders/logger";
-import { ErrorHandler } from "@/api/middlewares/errorHandler";
+import {
+  errHandler,
+  ErrorHandler,
+  ErrorHandlerProps,
+} from "@/api/middlewares/errorHandler";
 
 interface JwtPayload extends jwt.JwtPayload {
   id: string;
@@ -64,13 +68,9 @@ const confirmAuthentication = async (
     req.userId = decoded.id;
 
     return next();
-  } catch (error) {
-    const errorObject = error as ErrorHandler;
-    catchError(errorObject, res);
-    return next({
-      message: errorObject.message,
-      status: 401,
-    });
+  } catch (e) {
+    const error = e as ErrorHandlerProps;
+    errHandler(res, error, error.status);
   }
 };
 

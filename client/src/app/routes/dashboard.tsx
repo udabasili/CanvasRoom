@@ -21,6 +21,7 @@ import { GroupSocket } from '@/socket/group-socket.ts';
 type Props = {
   channelId: string;
   groupId: string;
+  language: string;
 };
 
 type ChannelComponentProps = {
@@ -117,6 +118,7 @@ export const Dashboard = () => {
             <Component
               channelId={channel?._id as string}
               groupId={selectedGroup?._id as string}
+              language={selectedGroup?.language as string}
             />
           ) : (
             <div>

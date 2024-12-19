@@ -1,4 +1,14 @@
+import { cpp } from '@codemirror/lang-cpp';
+import { css } from '@codemirror/lang-css';
+import { html } from '@codemirror/lang-html';
+import { java } from '@codemirror/lang-java';
 import { javascript } from '@codemirror/lang-javascript';
+import { json } from '@codemirror/lang-json';
+import { php } from '@codemirror/lang-php';
+import { python } from '@codemirror/lang-python';
+import { rust } from '@codemirror/lang-rust';
+import { sql } from '@codemirror/lang-sql';
+import { xml } from '@codemirror/lang-xml';
 import CodeMirror from '@uiw/react-codemirror';
 import React, { useContext, useEffect, useRef } from 'react';
 
@@ -11,8 +21,28 @@ import { CodingProjectSocket } from '@/socket/coding-project-socket.ts';
 type CodeEditorProps = {
   channelId: string;
   groupId: string;
+  language: string;
 };
-export const CodeEditor = ({ channelId, groupId }: CodeEditorProps) => {
+
+const languageExtensions: Record<string, any> = {
+  javascript,
+  python,
+  rust,
+  html,
+  sql,
+  java,
+  cpp,
+  php,
+  json,
+  xml,
+  css,
+};
+
+export const CodeEditor = ({
+  channelId,
+  groupId,
+  language,
+}: CodeEditorProps) => {
   const { socket } = useContext(SocketContext) as SocketContextType;
   const { user } = useContext(AuthContext) as AuthContextType;
   const codeSocket = useRef<CodingProjectSocket | null>(null);
@@ -76,6 +106,7 @@ export const CodeEditor = ({ channelId, groupId }: CodeEditorProps) => {
       );
     }
   }, []);
+  const languageExtension = languageExtensions[language] || javascript; // Default to JavaScript
 
   return (
     <div className="size-full">
@@ -88,7 +119,7 @@ export const CodeEditor = ({ channelId, groupId }: CodeEditorProps) => {
             width={'100%'}
             height={'100%'}
             className="size-full"
-            extensions={[javascript({ jsx: true })]}
+            extensions={[languageExtension()]}
             onChange={onChange}
           />
         </div>

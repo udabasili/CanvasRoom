@@ -1,14 +1,14 @@
 import { zodResolver } from '@hookform/resolvers/zod';
+import { AxiosError } from 'axios';
 import clsx from 'clsx';
 import { useContext, useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { Link } from 'react-router-dom';
-import { toast } from 'react-toastify';
 import * as z from 'zod';
 
 import { Input } from '@/components/form';
 import { firstUser, secondUser } from '@/features/auth/data.ts';
 import { AuthContext, AuthContextType } from '@/lib/auth-context.tsx';
+import { ErrorContext } from '@/lib/error-context.tsx';
 
 const schema = z.object({
   email: z.string().min(1, 'Email is Required'),
@@ -28,6 +28,7 @@ export const LoginForm = ({ onSuccess }: LoginFormProps) => {
   const authContext = useContext(AuthContext) as AuthContextType;
   const { login } = authContext;
   const [isLoading, setIsLoading] = useState(false);
+  const errorContext = useContext(ErrorContext);
   const { register, handleSubmit, formState, reset } = useForm<LoginValues>({
     resolver: zodResolver(schema),
     defaultValues: {
@@ -44,7 +45,7 @@ export const LoginForm = ({ onSuccess }: LoginFormProps) => {
   }, []);
 
   function handleSetInitialValues(user: { email: string; password: string }) {
-    reset(user); // Resets the form with new values
+    reset(user);
   }
 
   const onSubmit = async (values: LoginValues) => {
@@ -53,9 +54,10 @@ export const LoginForm = ({ onSuccess }: LoginFormProps) => {
       await login(values);
       onSuccess();
     } catch (error) {
-      const errorMessage = (error as Error).message;
-      console.error(error);
-      toast(errorMessage, { type: 'error' });
+      if (error instanceof AxiosError) {
+        console.log(error.response?.data.errors);
+        errorContext?.showError(error.response?.data.errors);
+      }
     } finally {
       setIsLoading(false);
     }
@@ -73,13 +75,12 @@ export const LoginForm = ({ onSuccess }: LoginFormProps) => {
           </p>
           <div className="modal-action">
             <form method="dialog">
-              {/* if there is a button in form, it will close the modal */}
               <button className="btn">Close</button>
             </form>
           </div>
         </div>
       </dialog>
-      <div className="join">
+      <div className="join my-2">
         <button
           className="btn join-item"
           onClick={() => handleSetInitialValues(firstUser)}
@@ -111,7 +112,7 @@ export const LoginForm = ({ onSuccess }: LoginFormProps) => {
         <div>
           <button
             type="submit"
-            className="btn w-full bg-primaryColor text-white"
+            className="btn w-full border-primaryColor bg-primaryColor text-white"
           >
             {isLoading ? (
               <svg
@@ -140,14 +141,14 @@ export const LoginForm = ({ onSuccess }: LoginFormProps) => {
         </div>
       </form>
       <div className="mt-2 flex items-center justify-end">
-        <div className="text-sm">
-          <Link
-            to="../register"
-            className="font-medium text-blue-600 hover:text-blue-500"
-          >
-            Register
-          </Link>
-        </div>
+        {/*<div className="text-sm">*/}
+        {/*  <Link*/}
+        {/*    to="../register"*/}
+        {/*    className="font-medium text-blue-600 hover:text-blue-500"*/}
+        {/*  >*/}
+        {/*    Register*/}
+        {/*  </Link>*/}
+        {/*</div>*/}
       </div>
     </div>
   );

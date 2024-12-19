@@ -15,8 +15,8 @@ export const Login = () => {
     <AuthLayout title="Auth - Login">
       <div className="space-y-4">
         <div className="mb-8">
-          <h3 className="text-3xl font-extrabold text-white">Sign in</h3>
-          <p className="mt-4 text-sm leading-relaxed text-white">
+          <h3 className="text-3xl font-extrabold text-black">Sign in</h3>
+          <p className="mt-4 text-sm leading-relaxed text-black">
             Sign in to your account and explore a world of possibilities. Your
             journey begins here.
           </p>
