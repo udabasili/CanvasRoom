@@ -3,6 +3,7 @@ import Logger from "./logger";
 //We have to import at least all the events once so they can be triggered
 import { Application } from "express";
 import connectDB from "@/loaders/mongoose";
+import { populateGroup } from "@/seedData/groudSeed";
 
 export default async ({ expressApp }: { expressApp: Application }) => {
   //wait for db then load express
@@ -10,5 +11,5 @@ export default async ({ expressApp }: { expressApp: Application }) => {
   Logger.info("DB loaded and connected!");
   await expressLoader({ app: expressApp });
   Logger.info("Express loaded");
-  // await populateGroup();
+  //await populateGroup();
 };

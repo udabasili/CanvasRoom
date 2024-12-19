@@ -6,7 +6,11 @@ class MainChat {
   private socket: Socket;
 
   constructor() {
-    this.socket = io(config.apiUrl);
+    this.socket = io(config.apiUrl, {
+      reconnectionAttempts: 5, // Limit reconnection attempts
+      reconnectionDelay: 2000, // Reconnect every 2 seconds
+    });
+
     //connect to the socket server
     this.socket.connect();
   }

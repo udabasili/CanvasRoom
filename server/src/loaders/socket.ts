@@ -15,32 +15,53 @@ let io: IOServer;
  * Initialize Socket.IO server
  * @param server - The HTTP server instance
  */
-export function initializeIO(server: HttpServer): IOServer {
+
+type ConnectionAttempts = {
+  [key: string]: number; // Tracks attempts per client (by socket ID or IP)
+};
+
+const reconnectionAttempts: ConnectionAttempts = {};
+
+export function initializeIO(server: HttpServer): SocketIOServer {
   io = new SocketIOServer(server, {
     cors: {
-      origin: "*", // Adjust this for production, replace '*' with allowed origins
+      origin: "*",
       methods: ["GET", "POST"],
     },
   });
 
   console.log("Socket.IO initialized");
 
-  // Socket connection event
   io.on("connection", async (socket: Socket) => {
+    const clientIP = socket.handshake.address; // Use IP or other unique identifier
+
+    if (!reconnectionAttempts[clientIP]) {
+      reconnectionAttempts[clientIP] = 1;
+    } else {
+      reconnectionAttempts[clientIP]++;
+    }
+
+    if (reconnectionAttempts[clientIP] > 5) {
+      console.log(`Excessive reconnections from ${clientIP}`);
+      socket.disconnect(true); // Forcefully disconnect the client
+      return;
+    }
+
+    console.log(`Socket connected: ${socket.id}`);
+    console.log(
+      `Reconnection attempts for ${clientIP}: ${reconnectionAttempts[clientIP]}`,
+    );
+
+    // Handle events here
     console.log(`Socket connected: ${socket.id}`);
     await channelListener({ socket });
     await groupListener({ socket });
     await codeListener({ socket });
     await chatListener({ socket });
 
-    // Example event handling
-    socket.on("message", (data) => {
-      console.log("Message received:", data);
-      socket.broadcast.emit("message", data); // Broadcast to all other clients
-    });
-
     socket.on("disconnect", () => {
       console.log(`Socket disconnected: ${socket.id}`);
+      delete reconnectionAttempts[clientIP]; // Clean up when the socket disconnects
     });
   });
 
