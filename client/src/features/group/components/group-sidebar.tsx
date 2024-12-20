@@ -1,5 +1,4 @@
 import { IoMdAdd } from 'react-icons/io';
-import { IoChatbubblesOutline } from 'react-icons/io5';
 
 import { CircleIcon, GroupContainer } from '@/features/group';
 import { useGetUserGroups } from '@/features/group/api/get-user-groups.ts';
