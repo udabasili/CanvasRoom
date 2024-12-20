@@ -41,6 +41,6 @@ export class LiveDrawingService {
     if (!drawingRecord) {
       throw new ErrorHandler("No Record Found", 404);
     }
-    return drawingRecord.toJSON();
+    return drawingRecord;
   }
 }

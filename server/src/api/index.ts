@@ -8,6 +8,7 @@ import publicRoute from "@/api/routes/public";
 import chat from "@/api/routes/chat";
 import question from "@/api/routes/question";
 import answers from "@/api/routes/answers";
+import liveDrawing from "@/api/routes/live-drawing";
 
 export default () => {
   const app = Router();
@@ -20,6 +21,7 @@ export default () => {
   chat(app);
   question(app);
   answers(app);
+  liveDrawing(app);
   app.use(errors());
   return app;
 };

@@ -26,5 +26,5 @@ const liveDrawingListener = ({ socket }: { socket: Socket }) => {
   });
 };
 export default async ({ socket }: { socket: Socket }) => {
-  await liveDrawingListener({ socket });
+  liveDrawingListener({ socket });
 };
