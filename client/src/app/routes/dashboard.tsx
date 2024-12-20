@@ -11,6 +11,7 @@ import {
   HamburgerMenu,
 } from '@/features/dashboard';
 import { Group, GroupSidebar } from '@/features/group';
+import { DrawingBoard } from '@/features/live-drawing';
 import { Questionnaire } from '@/features/questionnaire';
 import { User } from '@/features/user';
 import { AuthContext, AuthContextType } from '@/lib/auth-context.tsx';
@@ -33,7 +34,7 @@ const COMPONENT_MAP: ChannelComponentProps = {
   questionnaire: Questionnaire,
   group_chat: ChatWindow,
   coding_project: CodeEditor,
-  live_drawings: null,
+  live_drawings: DrawingBoard,
 };
 
 export const Dashboard = () => {
