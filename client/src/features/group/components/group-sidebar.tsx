@@ -23,9 +23,9 @@ export const GroupSidebar = ({
 
   return (
     <GroupContainer>
-      <CircleIcon>
-        <IoChatbubblesOutline size={20} />
-      </CircleIcon>
+      {/*<CircleIcon>*/}
+      {/*  <IoChatbubblesOutline size={20} />*/}
+      {/*</CircleIcon>*/}
       <hr />
       {isLoading ? (
         <div className="skeleton size-16 shrink-0 rounded-full"></div>
