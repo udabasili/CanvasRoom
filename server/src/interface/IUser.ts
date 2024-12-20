@@ -12,8 +12,6 @@ export interface IUser extends Document {
   email: string;
   password: string;
   role: Role;
-  createdAt: Date;
-  updatedAt: Date;
   avatarUrl?: string;
   groups: mongoose.Types.ObjectId[];
 }

@@ -18,8 +18,6 @@ export interface IChannel extends Document {
   group: mongoose.Types.ObjectId;
   name: string;
   type: keyof typeof channelTypes;
-  createdAt: Date;
-  updatedAt: Date;
 }
 
 export interface IChannelInputDTO {
