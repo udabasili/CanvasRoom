@@ -34,7 +34,12 @@ export default ({ app }: { app: Application }) => {
   app.use(config.api.prefix, routes());
 
   /// error handlers
-
+  // Serve index.html for all unmatched routes in production
+  if (process.env.NODE_ENV !== "development") {
+    app.get("*", (req: Request, res: Response) => {
+      res.sendFile(path.resolve(__dirname, "../../public", "index.html"));
+    });
+  }
   app.use((req: Request, res: Response, next: NextFunction) => {
     const error = new Error("Not found") as ErrorHandlerProps;
     error.status = 404;
@@ -51,10 +56,4 @@ export default ({ app }: { app: Application }) => {
       });
     },
   );
-  // Serve index.html for all unmatched routes in production
-  if (process.env.NODE_ENV !== "development") {
-    app.get("*", (req: Request, res: Response) => {
-      res.sendFile(path.resolve(__dirname, "../../public", "index.html"));
-    });
-  }
 };
