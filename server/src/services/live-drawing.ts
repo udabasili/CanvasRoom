@@ -37,9 +37,13 @@ export class LiveDrawingService {
     const query = {
       channel: new Types.ObjectId(this.channelID),
     };
-    const drawingRecord = await this.liveDrawingModel.findOne(query).lean();
+    let drawingRecord = await this.liveDrawingModel.findOne(query).lean();
     if (!drawingRecord) {
-      throw new ErrorHandler("No Record Found", 404);
+      await this.liveDrawingModel.create({
+        channel: new Types.ObjectId(this.channelID),
+        strokes: [],
+      });
+      drawingRecord = await this.liveDrawingModel.findOne(query).lean();
     }
     return drawingRecord;
   }
