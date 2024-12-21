@@ -139,11 +139,17 @@ export const DrawingBoard = ({ groupId, channelId }: DrawingBoardProps) => {
   ) : error ? (
     <div>Error: {error.message}</div>
   ) : (
-    <canvas
-      ref={canvasRef}
-      onMouseDown={handleMouseDown}
-      onMouseMove={handleMouseMove}
-      onMouseUp={handleMouseUp}
-    />
+    <div>
+      <div className="border-b-2 border-gray-300 text-center text-2xl font-bold">
+        <span>Click and drag to draw</span>
+      </div>
+      <canvas
+        ref={canvasRef}
+        onMouseDown={handleMouseDown}
+        onMouseMove={handleMouseMove}
+        onMouseUp={handleMouseUp}
+        style={{ border: '1px solid black', width: '100%', height: '500px' }}
+      />
+    </div>
   );
 };
