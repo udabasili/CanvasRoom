@@ -227,3 +227,4 @@ sketch
 /server/.env
 /server/.env.example
 /client/.env
+/server/public/
