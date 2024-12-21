@@ -51,10 +51,10 @@ export default ({ app }: { app: Application }) => {
       });
     },
   );
-  //Put this after all middleware. Otherwise, Heroku will give you 304 page
+  // Serve index.html for all unmatched routes in production
   if (process.env.NODE_ENV !== "development") {
-    app.get("*", function (req, res) {
-      res.sendFile(path.join(__dirname, "./../public", "index.html"));
+    app.get("*", (req: Request, res: Response) => {
+      res.sendFile(path.resolve(__dirname, "../../public", "index.html"));
     });
   }
 };
