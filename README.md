@@ -57,6 +57,7 @@
 CanvasRoom is a real-time collaboration platform that enables users to code, draw, and chat together seamlessly.
 Designed for dynamic group interactions, CanvasRoom empowers users to work collaboratively in real-time, enhancing
 productivity and creativity.
+![Demo Video](https://github.com/user-attachments/assets/f5249c58-8e5e-4146-8928-54d0442b19fd)
 
 ### Key Features
 
